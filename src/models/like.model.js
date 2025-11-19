@@ -8,7 +8,8 @@ const likeSchema = new Schema(
         },
         owner: {
             type: Schema.ObjectId,
-            ref: "User"
+            ref: "User",
+            required: true
         },
         comment: {
             type: Schema.ObjectId,
@@ -18,10 +19,11 @@ const likeSchema = new Schema(
             type: Schema.ObjectId,
             ref: "Tweet"
         },
-        likedBy: {
-            type: Schema.ObjectId,
-            ref: "User"
-        },
+        reactionType: {
+           type: String,
+           enum: ["like", "dislike"],
+           required: true
+        }
     },
     {
         timestamps: true
