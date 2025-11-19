@@ -1,7 +1,7 @@
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/apiError.js';
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from '../utils/cloudinary.js';
+import { uploadOnCloudinary, deleteFromCloudinary } from '../utils/cloudinary.js';
 import { ApiResponse } from "../utils/apiResponse.js";
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
@@ -273,19 +273,28 @@ const updateAccrountDetails = asyncHandler(async (req, res) => {
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
     const avatarLocalPath = req.file?.path
+    const userId = req.user._id
 
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is missing")
     }
 
-    // TODO: delete old image - assignment
-
-    const avatar = await uploadOnCloudinary(avatarLocalPath)
+    const avatarPreUrl = await User.findById(userId)
+        .select("avatar")
+        .populate("avatar");
+    
+    // delete old url
+    const destoryPreUrl = await deleteFromCloudinary(avatarPreUrl.avatar)
+    const avatar = ""
+    if (destoryPreUrl) {
+        avatar = await uploadOnCloudinary(avatarLocalPath)
+    }
 
     if (!avatar.url) {
         throw new ApiError(400, "Error while uloading on avatar")
     }
 
+    // update new url in db
     const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
