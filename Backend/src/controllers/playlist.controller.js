@@ -12,6 +12,10 @@ const createPlaylist = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Name and Description is required")
     }
 
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
+    }
+
     await Playlist.create({
         name: name,
         description: description,
@@ -54,7 +58,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
 const getPlaylistById = asyncHandler(async (req, res) => {
     const {playlistId} = req.params
     
-    if (!playlistId) {
+    if (!isValidObjectId(playlistId)) {
         throw new ApiError(400, "Playlist Id not found")
     }
 
@@ -71,8 +75,12 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
     const {playlistId, videoId} = req.params
     const userId = req.user?._id
 
-    if (!playlistId || !videoId) {
+    if (!isValidObjectId(playlistId) || !isValidObjectId(videoId)) {
         throw new ApiError(400, "Playlist Id or video Id is missing")
+    }
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
     }
 
     const playlist = await Playlist.findById(playlistId);
@@ -100,8 +108,12 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
     const {playlistId, videoId} = req.params
     const userId = req.user?._id
 
-    if (!playlistId || !videoId) {
-        throw new ApiError(400, "Playlist Id or videoId is missing")
+    if (!isValidObjectId(playlistId) || !isValidObjectId(videoId)) {
+        throw new ApiError(400, "Playlist Id or video Id is missing")
+    }
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
     }
 
     const playlist = await Playlist.findById(playlistId);
@@ -129,8 +141,12 @@ const deletePlaylist = asyncHandler(async (req, res) => {
     const {playlistId} = req.params
     const userId = req.user?._id
 
-    if (!playlistId) {
+    if (!isValidObjectId(playlistId)) {
         throw new ApiError(400, "playlist Id not found")
+    }
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
     }
 
     const playlist = await Playlist.findById(playlistId);
@@ -155,8 +171,12 @@ const updatePlaylist = asyncHandler(async (req, res) => {
     const {name, description} = req.body
     const userId = req.user?._id
 
-    if (!playlistId) {
+    if (!isValidObjectId(playlistId)) {
         throw new ApiError(400, "Playlist Id not found")
+    }
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
     }
 
     const updates = {}

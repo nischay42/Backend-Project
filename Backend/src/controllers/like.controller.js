@@ -9,7 +9,7 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     const { videoId, type } = req.params
     const userId = req.user?._id
 
-    if (!videoId || !type) {
+    if (!isValidObjectId(videoId) || !type) {
         throw new ApiError(400, "video Id or type is missing")
     }
 
@@ -53,7 +53,7 @@ const toggleCommentsLike = asyncHandler(async (req, res) => {
     const { commentId, type } = req.params
     const userId = req.user?._id
 
-    if (!commentId || !type) {
+    if (!isValidObjectId(commentId) || !type) {
         throw new ApiError(400, "comment Id or type is missing")
     }
 
@@ -98,6 +98,10 @@ const toggleTweenLike = asyncHandler(async (req, res) => {
     const { tweetId, type } = req.params
     const userId = req.user?._id
 
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing for tweet")
+    }
+
     const existingReaction = await Like.findOne({ tweet: tweetId, user: userId})
 
     if (existingReaction) {
@@ -138,6 +142,10 @@ const toggleTweenLike = asyncHandler(async (req, res) => {
 
 const getLikedVideos = asyncHandler(async (req, res) => {
     const userId = req.user?._id
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
+    }
 
     const reactions = await Like.find({
         user: userId,

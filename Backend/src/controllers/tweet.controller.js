@@ -14,6 +14,10 @@ const createTweet = asyncHandler(async (req, res) => {
         throw new ApiError(400, "content not found")
     }
 
+    if (!isValidObjectId(ownerId)) {
+        throw new ApiError(400, "Owner Id is missing")
+    }
+
     await Tweet.create({
         content: content,
         owner: ownerId
@@ -29,6 +33,10 @@ const createTweet = asyncHandler(async (req, res) => {
 const  getUserTweets = asyncHandler(async (req, res) => {
     
     const ownerId = req.user._id
+
+    if (!isValidObjectId(ownerId)) {
+        throw new ApiError(400, "Owner Id is missing")
+    }
 
     const tweets = await Tweet.find({
         owner: ownerId
@@ -47,8 +55,12 @@ const updateTweet = asyncHandler(async (req, res) => {
     const { content } = req.body
     const userId = req.user._id
 
-    if (!content || !tweetId) {
+    if (!content || !isValidObjectId(tweetId)) {
       throw new ApiError(400, "Content or tweet Id is missing")
+    }
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
     }
 
     const tweet = await Tweet.findById(tweetId)
@@ -79,26 +91,30 @@ const deleteTweet = asyncHandler(async (req, res) => {
    const userId = req.user._id
    const { tweetId } = req.params
 
-   if (!tweetId) {
+    if (!isValidObjectId(tweetId)) {
       throw new ApiError(400, "tweet Id is missing")
-   }
+    }
 
-   const tweet =  await findById(tweetId)
-   if (!tweet) {
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
+    }
+
+    const tweet =  await findById(tweetId)
+    if (!tweet) {
       throw new ApiError(404, "tweet not found")
-   }
+    }
 
-   if (tweet.owner.toString() !== userId.toString()) {
+    if (tweet.owner.toString() !== userId.toString()) {
       throw new ApiError(403, "You are not allowed to delete this tweet")
-   }
+    }
 
-   await Tweet.findByIdAndDelete(tweetId)
+    await Tweet.findByIdAndDelete(tweetId)
 
-   return res
+    return res
       .status(200)
       .json(
          new ApiResponse(200, {}, "Tweet deleted successfully")
-      )
+        )
 })
 
 export {

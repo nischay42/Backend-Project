@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { Video } from "../models/video.model.js";
 import { User } from "../models/user.model.js";
 import { Subscription } from '../models/subscription.model.js'
@@ -12,7 +12,7 @@ const getChannelStats = asyncHandler(async (req, res) => {
     // TODO: Get the channel stats like total video views, total subscribers, total video, total likes etc.
     const userId = req.user?._id
 
-    if (!userId) {
+    if (!isValidObjectId(userId)) {
         throw new ApiError(400, "user Id not found");
     }
 
@@ -147,7 +147,7 @@ const getChannelVideo = asyncHandler(async (req, res) => {
 
     const owner = req.user._id
 
-    if (!owner) {
+    if (!isValidObjectId(owner)) {
         throw new ApiError(400, "owner not found");
     }
 

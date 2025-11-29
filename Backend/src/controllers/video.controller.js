@@ -13,6 +13,10 @@ const getAllVideos = asyncHandler(async (req, res) => {
     page = parseInt(page)
     limit = parseInt(limit)
 
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
+    }
+
     // filter object
 
     const filter = {}
@@ -63,6 +67,10 @@ const getAllVideos = asyncHandler(async (req, res) => {
 const publishAVideo = asyncHandler(async (req, res) => {
     const { title, description, category, isPublished = true } = req.body;
     const owner = req.user._id
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "Owner Id is missing")
+    }
 
     const videoFilePath = req.files?.videoFile?.[0]?.path
     const thumbnailPath = req.files?.thumbnail?.[0]?.path
@@ -124,7 +132,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
 const getVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
     
-    if (!videoId) {
+    if (!isValidObjectId(videoId)) {
         throw new ApiError(400, "Video Id is missing")
     }
 
@@ -146,7 +154,7 @@ const updateVideo = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
     const { title, description, isPublished, category } = req.body;
     
-    if (!videoId) {
+    if (!isValidObjectId(videoId)) {
         throw new ApiError(400, "Video Id is missing")
     }
 
@@ -190,8 +198,12 @@ const deleteVideo = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
     const userId = req.user._id
     
-    if (!videoId) {
+    if (!isValidObjectId(videoId)) {
         throw new ApiError(400, "Video Id is missing")
+    }
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
     }
     
     const video = await Video.findById(videoId)
@@ -227,8 +239,12 @@ const togglePublisherStatus = asyncHandler(async (req, res) => {
     const { toggleStatus } = req.body
     const userId = req.user._id
 
-    if (!videoId) {
+    if (!isValidObjectId(videoId)) {
         throw new ApiError(400, "Video Id is missing");
+    }
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
     }
 
     if (typeof toggleStatus === "undefined") {

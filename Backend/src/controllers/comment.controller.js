@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { Comment } from "../models/comment.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
@@ -10,7 +10,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
    const {videoId} = req.params
    const {page = 1, limit = 10} = req.query
 
-   if (!videoId) {
+   if (!isValidObjectId(videoId)) {
      throw new ApiError(400, "video Id is missing")
    }
 
@@ -106,7 +106,7 @@ const addComment = asyncHandler(async (req, res) => {
    const { content } = req.body
    const userId = req.user?._id
 
-   if(!videoId || !content) {
+   if(!isValidObjectId(videoId) || !content) {
       throw new ApiError(400, "Content or videoId missing")
    }
 
@@ -132,7 +132,7 @@ const updateComment = asyncHandler(async (req, res) => {
    const { commentId } = req.params
    const { content } = req.body
 
-   if (!commentId || !content) {
+   if (!isValidObjectId(commentId) || !content) {
       throw new ApiError(400, "comment ID or content is missing")
    }
 
@@ -164,7 +164,7 @@ const deleteComment = asyncHandler(async (req, res) => {
    
    const { commentId } = req.params
 
-   if (!commentId) {
+   if (!isValidObjectId(commentId)) {
       throw new ApiError(400, "comment Id is missing")
    }
 

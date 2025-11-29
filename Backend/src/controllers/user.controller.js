@@ -4,7 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary, deleteFromCloudinary } from '../utils/cloudinary.js';
 import { ApiResponse } from "../utils/apiResponse.js";
 import jwt from 'jsonwebtoken';
-import mongoose from 'mongoose';
+import mongoose, { isValidObjectId } from 'mongoose';
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -150,8 +150,14 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 const logoutUser = asyncHandler( async (req, res) => {
+    const userId = req.user._id
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
+    }
+
     await User.findByIdAndUpdate(
-        req.user._id,
+        userId,
         {
             $unset: {
                 refreshToken: 1 // this removes field from document
@@ -221,13 +227,19 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 }) 
 
 const changeCurrentPassword = asyncHandler(async (req, res) => {
+    const userId = req.user?._id
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
+    }
+
     const {oldPassword, newPassword,  confPassword} = req.body
 
     if (!(newPassword === confPassword)) {
         throw new ApiError(400, "Invalid old password")
     }
 
-    const user = await User.findById(req.user?._id)
+    const user = await User.findById(userId)
     const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
 
     if (!isPasswordCorrect) {
@@ -250,13 +262,18 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 
 const updateAccrountDetails = asyncHandler(async (req, res) => {
     const {fullname, email} = req.body
+    const userId = req.user?._id
 
     if(!fullname || !email) {
         throw new ApiError(400, "All fields are required")
     }
 
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
+    }
+
     const user = await User.findByIdAndUpdate(
-        req.user?._id,
+        userId,
         {
             $set: {
                 fullname,
@@ -273,7 +290,11 @@ const updateAccrountDetails = asyncHandler(async (req, res) => {
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
     const avatarLocalPath = req.file?.path
-    const userId = req.user._id
+    const userId = req.user?._id
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
+    }
 
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is missing")
@@ -314,6 +335,11 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 
 const updateUserCoverImage = asyncHandler(async (req, res) => {
     const coverImageLocalPath = req.file?.path
+    const userId = req.user?._id
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
+    }
 
     if (!coverImageLocalPath) {
         throw new ApiError(400, "CoverImage file is missing")
@@ -326,7 +352,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     }
 
     const user = await User.findByIdAndUpdate(
-        req.user?._id,
+        userId,
         {
             $set: {
                 coverImage: coverImage.url
@@ -416,10 +442,16 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
 })
 
 const getWatchHistory = asyncHandler(async (req,  res) => {
+    const userId = req.user?._id
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "User Id is missing")
+    }
+
     const user = await User.aggregate([
         {
             $match: {
-                _id: new mongoose.Types.ObjectId(req.user._id)
+                _id: new mongoose.Types.ObjectId(userId)
             }
         },
         {
