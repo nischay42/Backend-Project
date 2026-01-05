@@ -6,7 +6,7 @@ type videoLike = {
 }
 const toggoleVideoLike = async (params: videoLike) => {
     
-    const res = await api.post(`/v/:${params.videoId}/:${params.type}`)
+    const res = await api.post(`/v/${params.videoId}/${params.type}`)
     return res.data
 
 }
@@ -18,7 +18,7 @@ type commentLike = {
 
 const toggoleCommentLike = async (params: commentLike) => {
     
-    const res = await api.post(`/c/:${params.commentId}/:${params.type}`)
+    const res = await api.post(`/c/${params.commentId}/${params.type}`)
     return res.data
 }
 
@@ -29,7 +29,7 @@ type tweeetLike = {
 
 const toggoleTweetLike = async (params: tweeetLike) => {
     
-    const res = await api.post(`/t/:${params.tweetId}/:${params.type}`)
+    const res = await api.post(`/t/${params.tweetId}/${params.type}`)
     return res.data
 }
 
