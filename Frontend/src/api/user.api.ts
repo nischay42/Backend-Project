@@ -3,33 +3,34 @@ import api from './axios'
 type UserReg = {
     fullname: string,
     email: string,
+    username: string,
     password: string,
-    avatar: File | null,
-    coverImage: File | null,
-
+    // avatar: File | null,
+    // coverImage: File | null,
 }
 
 const userRegister = async (details: UserReg) => {
-    const formData =  new FormData();
+    // const formData =  new FormData();
 
-    formData.append("fullname", details.fullname)
-    formData.append("email", details.email)
-    formData.append("password", details.password)
+    // formData.append("fullname", details.fullname)
+    // formData.append("email", details.email)
+    // formData.append("username", details.username)
+    // formData.append("password", details.password)
 
-    if (details.avatar) {
-        formData.append("avatar", details.avatar)
-    }
-    if (details.coverImage) {
-        formData.append("coverImage", details.coverImage)
-    }
+    // if (details.avatar) {
+    //     formData.append("avatar", details.avatar)
+    // }
+    // if (details.coverImage) {
+    //     formData.append("coverImage", details.coverImage)
+    // }
 
-    const res = await api.post("/users/register", formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
+    const res = await api.post("/users/register", details, {
+        // headers: {
+        //     "Content-Type": "multipart/form-data",
+        // },
     })
 
-    return res.data
+    return res
 }
 
 type UserLog = {
@@ -63,7 +64,7 @@ const userPasswordChange = async (params: passChang) => {
 
 const currentUser = async () => {
 
-    const res = await api.get("/current-user")
+    const res = await api.get("/users/current-user")
     return res.data
 }
 
@@ -102,11 +103,6 @@ const userWatchHistory = async () => {
     return res.data
 }
 
-const refreshAccessToken = async () => {
-    
-    const res = await api.post("/refresh-token")
-    return res.data
-}
 
 export {
     userRegister,
@@ -119,5 +115,4 @@ export {
     updateCoverImage,
     getChannelProfile,
     userWatchHistory,
-    refreshAccessToken
 }
