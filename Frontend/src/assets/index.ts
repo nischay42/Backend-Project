@@ -6,6 +6,7 @@ import content from './my content.svg'
 import setting from './setting.svg'
 import subscriber from './subscriber.svg'
 import support from './support.svg'
+import search from './search-lg.svg'
 
 export {
     collection,
@@ -15,5 +16,6 @@ export {
     content,
     setting,
     subscriber,
-    support
+    support,
+    search
 }
