@@ -1,11 +1,11 @@
-import History from "./History/History"
-import Collection from "./Collection/Collection"
+import History from "./History"
+import Collection from "./Collection"
 import Home from "./Home"
-import LikeVideo from "./Like Video/LikeVideo"
-import MyContent from "./My Content/MyContent"
-import Setting from "./Setting/Setting"
-import Support from "./Support/Support"
-import Subscribers from "./Subscribers/Subscribers"
+import LikedVideo from "./LikedVideo"
+import MyChannel from "./MyChannel"
+import Setting from "./Setting"
+import Support from "./Support"
+import Subscribers from "./Subscribers"
 import Login from "./Login"
 import Signup from "./Signup"
 
@@ -13,8 +13,8 @@ export {
     History,
     Collection,
     Home,
-    LikeVideo,
-    MyContent,
+    LikedVideo,
+    MyChannel,
     Setting,
     Support,
     Subscribers,
