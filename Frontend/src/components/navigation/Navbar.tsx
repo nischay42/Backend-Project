@@ -25,7 +25,7 @@ const NavBar = () => {
         <SearchBar />
         <div className='flex items-center mr-15'>
           <UserMenu />
-          <div className=''>
+          <div className='flex'>
             {!isAuthenticated ? (
               <>
               <Link 
