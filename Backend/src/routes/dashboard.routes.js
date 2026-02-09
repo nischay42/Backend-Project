@@ -7,9 +7,7 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router()
 
-router.use(verifyJWT)
-
 router.route("/stats").get(verifyJWT, getChannelStats)
-router.route("/videos").get(verifyJWT, getChannelVideo)
+router.route("/v/:owner").get(getChannelVideo)
 
 export default router
