@@ -1,4 +1,4 @@
-import VideoCard from "../components/video/VideoCard"
+import VideoCard from "../components/channel/VideoCard"
 import { getAllVideo } from "../api/video.api"
 import { useEffect, useState, useRef } from "react"
 import { useToastContext } from "../context/ToastContext"

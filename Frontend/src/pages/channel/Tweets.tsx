@@ -1,6 +1,6 @@
 import { createTweet } from '../../api/tweet.api'
 import Button from '../../components/Button'
-import TweetCard from '../../components/Tweet/TweetCard'
+import TweetCard from '../../components/channel/TweetCard'
 import { useState } from 'react'
 import { useToastContext } from '../../context/ToastContext'
 
