@@ -23,7 +23,8 @@ const getChannelStats = asyncHandler(async (req, res) => {
         { // GET USER DETAILS (username, avatar)
             $project: {
                 username: 1,
-                avatar: 1
+                avatar: 1,
+                fullname: 1 
             }
         },
         { // LOOKUP VIDEOS CREATED BY USER
@@ -145,13 +146,49 @@ const getChannelStats = asyncHandler(async (req, res) => {
 
 const getChannelVideo = asyncHandler(async (req, res) => {
 
-    const owner = req.user._id
+    const {owner} = req.params
 
     if (!isValidObjectId(owner)) {
         throw new ApiError(400, "owner not found");
     }
 
-    const videos = await Video.find({ owner }).toSorted({ createdAt: -1});
+    const videos = await Video.aggregate([
+        {
+            $match: {
+                owner: new mongoose.Types.ObjectId(owner)
+            }
+        },
+        {
+            $sort: { createdAt: -1 }
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "owner"
+            }
+        },
+        {
+            $unwind: "$owner"
+        },
+        {
+            $project: {
+            title: 1,
+            thumbnail: 1,
+            views: 1,
+            duration: 1,
+            createdAt: 1,
+            category: 1,
+            videoFile: 1,
+            owner: {
+              fullname: "$owner.fullname",
+              avatar: "$owner.avatar",
+              username: "$owner.username"
+              }
+            }
+        }
+    ])
 
     return res
         .status(200)
