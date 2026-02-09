@@ -3,13 +3,13 @@ import api from './axios'
 
 const getChannelStats = async () => {
     
-    const res = await api.get("/stats")
+    const res = await api.get("/dashboard/stats")
     return res.data
 }
 
-const getChannelVideo = async () => {
+const getChannelVideo = async (userId: number) => {
     
-    const res = await api.get("/videos")
+    const res = await api.get(`/dashboard/v/${userId}`)
     return res.data
 }
 

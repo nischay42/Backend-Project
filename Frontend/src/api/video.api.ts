@@ -1,8 +1,42 @@
 import api from "./axios";
 
-// const getAllVideo = async (params:type) => {
+const getAllVideo = async (limit: number, category: string) => {
+    const params = new URLSearchParams()
+    params.append('limit', limit.toString())
+    if(category) params.append('category', category)
+
+    const res = await api.get(`/videos?${params.toString()}`)
     
-// }
+    return res.data
+}
+
+type publishVideoPayload = {
+    videoFile: File
+    thumbnail: File
+    title: string
+    description: string
+    category: string
+    isPublished: boolean
+}
+
+const publishVideo = async ( payload: publishVideoPayload) => {
+    const formData = new FormData()
+   
+    formData.append('title', payload.title)
+    formData.append('description', payload.description)
+    formData.append('category', payload.category)
+    formData.append('videoFile', payload.videoFile)
+    formData.append('thumbnail', payload.thumbnail)
+    formData.append('isPublished', String(payload.isPublished))
+
+
+    const res = await api.post('/videos', formData, {
+        headers: {
+            'Content-type': 'multipart/form-data'
+        }
+    })
+    return res.data
+}
 
 const deleteVideo = async (videoId: string) => {
     
@@ -48,7 +82,9 @@ const togglePublisherStatus = async (videoId: string, toggleStatus: boolean) => 
 }
 
 export {
+    getAllVideo,
     deleteVideo,
     updateVideo,
-    togglePublisherStatus
+    togglePublisherStatus,
+    publishVideo
 }

@@ -58,7 +58,7 @@ type passChang = {
 
 const userPasswordChange = async (params: passChang) => {
     
-    const res = await api.post("/change-password", params)
+    const res = await api.post("/users/change-password", params)
     return res.data
 }
 
@@ -75,31 +75,31 @@ type accountUpdateDetail = {
 
 const updateAccountDetails = async (payload: accountUpdateDetail) => {
 
-    const res = await api.patch("/update-account", payload)
+    const res = await api.patch("/users/update-account", payload)
     return res.data
 }
 
 const updateAvatar = async (avatarImg?: File) => {
     
-    const res = await api.patch("/avatar", avatarImg)
+    const res = await api.patch("/users/avatar", avatarImg)
     return res.data
 }
 
 const updateCoverImage = async (coverImg?: File) => {
     
-    const res = await api.patch("/cover-image", coverImg)
+    const res = await api.patch("/users/cover-image", coverImg)
     return res.data
 }
 
 const getChannelProfile = async (username: string) => {
     
-    const res = await api.get(`/c/${username}`)
+    const res = await api.get(`/users/c/${username}`)
     return res.data
 }
 
 const userWatchHistory = async () => {
     
-    const res = await api.get("/history")
+    const res = await api.get("/users/history")
     return res.data
 }
 
