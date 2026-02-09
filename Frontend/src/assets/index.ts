@@ -7,6 +7,13 @@ import setting from './setting.svg'
 import subscriber from './subscriber.svg'
 import support from './support.svg'
 import search from './search-lg.svg'
+import follow from './users-plus.svg'
+import thumbsUp from './thumbs-up.svg'
+import thumbsDown from './thumbs-down.svg'
+import plus from './plus.png'
+import upload from './upload.svg'
+import profile from './profile.jpg'
+
 
 export {
     collection,
@@ -17,5 +24,11 @@ export {
     setting,
     subscriber,
     support,
-    search
+    search,
+    follow,
+    thumbsUp,
+    thumbsDown,
+    plus,
+    upload,
+    profile
 }
