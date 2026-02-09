@@ -1,8 +1,11 @@
-export type User = {
+type User = {
   _id: string;
-  fullname: string;
+  username: String
   email: string;
+  fullname: string;
   avatar?: string;
+  coverImage?: String
+  watchHistory?: String
 };
 
 export type AuthState = {
