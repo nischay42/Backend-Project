@@ -1,4 +1,4 @@
-import FollowingCard from '../../components/Following/FollowingCard'
+import FollowingCard from '../../components/channel/FollowingCard'
 import { search } from '../../assets'
 
 const Following = () => {

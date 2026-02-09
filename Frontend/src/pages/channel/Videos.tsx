@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useOutletContext } from "react-router-dom"
-import VideoCard from "../../components/video/VideoCard"
+import VideoCard from "../../components/channel/VideoCard"
 import { getChannelVideo } from "../../api/dashboard.api"
 
 type ChannelContext = {

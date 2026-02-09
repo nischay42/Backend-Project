@@ -1,4 +1,4 @@
-import PlaylistCard from '../../components/playlist/PlaylistCard'
+import PlaylistCard from '../../components/channel/PlaylistCard'
 
 
 const Playlist = () => {
