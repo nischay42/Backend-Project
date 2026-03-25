@@ -3,83 +3,187 @@ import { useAppDispatch } from '../app/hooks'
 import { login } from '../features/auth/authSlice'
 import logo from "../../public/Logo.svg"
 import { Link } from 'react-router-dom'
-import { Eye, EyeOff } from 'lucide-react';
 import { useToastContext } from '../context/ToastContext'
+import Input from '../components/Input'
+import Button from '../components/Button'
 
 const Login = () => {
-    const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [showPassword, setShowPassword] = useState(false)
+    const [errors, setErrors] = useState({
+        email: '',
+        password: ''
+    })
+    const [isLoading, setIsLoading] = useState(false)
     const toast = useToastContext()
 
-    const handleLogin = async () => {
+    // ✅ Client-side validation
+    const validateForm = () => {
+        const newErrors = {
+            email: '',
+            password: ''
+        }
+        let isValid = true
+
+        // Email validation
+        if (!email.trim()) {
+            newErrors.email = 'Email is required'
+            isValid = false
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = 'Please enter a valid email address'
+            isValid = false
+        }
+
+        // Password validation
+        if (!password) {
+            newErrors.password = 'Password is required'
+            isValid = false
+        } else if (password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters'
+            isValid = false
+        }
+
+        setErrors(newErrors)
+        return isValid
+    }
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault()
+
+        // Clear previous errors
+        setErrors({ email: '', password: '' })
+
+        // Validate form
+        if (!validateForm()) {
+            return
+        }
+
+        setIsLoading(true)
+
         try {
-            await dispatch(login({ email, password })).unwrap();
-            toast.success('Login successful!', 2500);
+            await dispatch(login({ email, password })).unwrap()
+            toast.success('Login successful!')
         } catch (error: any) {
-            toast.error(error?.message || 'Login failed', 4000);
+            // ✅ Handle specific error types
+            const errorMessage = error?.message || 'Login failed'
+            const errorLower = errorMessage.toLowerCase()
+
+            // Check if it's an invalid credentials error
+            if (errorLower.includes('password') || errorLower.includes('incorrect')) {
+                setErrors({ 
+                    email: '', 
+                    password: 'Incorrect password. Please try again.' 
+                })
+            } else if (errorLower.includes('email') || errorLower.includes('user not found') || errorLower.includes('not found')) {
+                setErrors({ 
+                    email: 'No account found with this email', 
+                    password: '' 
+                })
+            } else if (errorLower.includes('credential') || errorLower.includes('invalid')) {
+                setErrors({ 
+                    email: 'Invalid email or password', 
+                    password: 'Invalid email or password' 
+                })
+            } else {
+                // Generic error - show in toast
+                toast.error(errorMessage)
+            }
+        } finally {
+            setIsLoading(false)
         }
     }
 
-  return (
-    <div className='min-h-screen flex justify-center bg-black text-white'>
-      <form action={handleLogin}>
-        <div className="w-96 space-y-4">
-            <div className='flex flex-col items-center mt-15'>
-            <Link to="/">
-                <img src={logo} className='cursor-pointer' alt="logo" />
-            </Link>
+    // ✅ Clear error when user starts typing
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value)
+        if (errors.email) {
+            setErrors(prev => ({ ...prev, email: '' }))
+        }
+    }
 
-            </div>
-            <label htmlFor="email">Email*</label>
-            <input 
-            type="email"
-            name='email'
-            placeholder='Enter your email'
-            className='w-full px-3 py-2 bg-black border rounded'
-            value={email}
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            />
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value)
+        if (errors.password) {
+            setErrors(prev => ({ ...prev, password: '' }))
+        }
+    }
 
-            <label htmlFor="password">Password*</label>
-            <div className="relative w-full">
-                <input 
-                type={showPassword ? "text" : "password"}
-                name='password'
-                placeholder='Enter your password'
-                className='w-full px-3 py-2 bg-black border rounded'
-                value={password}
-                required
-                onChange={(e) => setPassword(e.target.value)}
+    return (
+        <div className='min-h-screen flex items-center justify-center bg-black text-white px-4'>
+            <form onSubmit={handleLogin} className="w-full max-w-md space-y-6">
+                {/* Logo */}
+                <div className='flex flex-col items-center mb-4'>
+                    <Link to="/">
+                        <img src={logo} className='cursor-pointer h-16' alt="logo" />
+                    </Link>
+                </div>
+
+                {/* Email Input */}
+                <Input 
+                    value={email}
+                    label='Email'
+                    type="email"
+                    placeholder='Enter your email'
+                    required
+                    onChange={handleEmailChange}
+                    error={errors.email}
+                    className='rounded'
+                    placeholderText='placeholder:text-gray-500'
                 />
-                
-                <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+
+                {/* Password Input */}
+                <Input 
+                    value={password}
+                    placeholder='Enter your password'
+                    type='password'
+                    label='Password' 
+                    required
+                    onChange={handlePasswordChange}
+                    error={errors.password}
+                    className='rounded'
+                    placeholderText='placeholder:text-gray-500'
+                />
+
+                {/* Forgot Password Link */}
+                {/* <div className='text-right'>
+                    <Link 
+                        to="/forgot-password" 
+                        className='text-purple-400 hover:text-purple-300 text-sm transition-colors'
+                    >
+                        Forgot Password?
+                    </Link>
+                </div> */}
+
+                {/* Sign In Button */}
+                <Button 
+                    type='submit' 
+                    className='w-full bg-[#AE7AFF] hover:bg-[#9c5ff0] transition-colors'
+                    disabled={isLoading}
                 >
-                {showPassword ? (
-                    <EyeOff size={20} />
-                ) : (
-                    <Eye size={20} />
-                )}
-                </button>
-            </div>
+                    {isLoading ? (
+                        <span className='flex items-center justify-center gap-2'>
+                            <div className='w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin' />
+                            Signing in...
+                        </span>
+                    ) : (
+                        'Sign in'
+                    )}
+                </Button>
 
-            <h3>Don't have any account? <Link to="/signup"> Sign Up </Link></h3>
-
-            <button
-            type='submit'
-            className='w-full bg-[#AE7AFF] py-2 text-black font-semibold cursor-pointer'
-            >
-                Sign in
-            </button>
+                {/* Sign Up Link */}
+                <p className='text-center text-gray-400'>
+                    Don't have an account?{' '}
+                    <Link 
+                        to="/signup" 
+                        className='text-purple-400 hover:text-purple-300 font-medium transition-colors'
+                    >
+                        Sign Up
+                    </Link>
+                </p>
+            </form>
         </div>
-      </form>
-    </div>
-  )
+    )
 }
 
 export default Login
