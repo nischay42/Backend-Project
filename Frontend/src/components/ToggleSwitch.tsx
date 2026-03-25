@@ -22,7 +22,7 @@ const ToggleSwitch = ({ label, checked = false, onChange }: ToggleSwitchProps) =
         type="button"
         onClick={handleToggle}
         className={`
-          relative inline-flex h-6 w-11 items-center rounded-full
+          relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer
           transition-colors duration-200 ease-in-out focus:outline-none
           ${isChecked ? 'bg-[#AE7AFF]' : 'bg-gray-600'}
         `}

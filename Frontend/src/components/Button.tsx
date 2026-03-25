@@ -39,11 +39,12 @@ const Button: React.FC<ButtonProps> = ({
     shadow-lg
     hover:shadow-xl
     active:shadow-md
+    select-none
   `}
   {...props}
 >
   {icon &&
-    <img src={icon} className='mr-2' />
+    <img src={icon} className='mr-2 h-5 w-5' />
   }
   {children}
 </button>
