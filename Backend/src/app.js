@@ -25,6 +25,7 @@ import subscriptionRouter from './routes/subscription.routes.js'
 import tweetRouter from './routes/tweet.routes.js'
 import userRouter from './routes/user.routes.js'
 import videoRouter from './routes/video.routes.js'
+import { errorHandler } from './middlewares/error.middleware.js'
 
 
 // routes
@@ -38,5 +39,6 @@ app.use("/api/v1/tweets", tweetRouter)
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/videos", videoRouter)
 
+app.use(errorHandler)
 
 export { app }
