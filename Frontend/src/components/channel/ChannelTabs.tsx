@@ -8,14 +8,14 @@ const ChannelTabs = () => {
         { name: "Subscribers", path: "subscribers" },
     ]
   return (
-    <div className="flex w-[80vw] h-12 gap-3 mt-3.5">
+    <div className="flex min-w-[80vw] h-12 gap-2 mt-3.5 ">
        {tabs.map(tab => (
            <NavLink
              key={tab.path}
              to={tab.path}
              end
              className={({ isActive }) => 
-                `flex items-center justify-center w-70 h-11 
+                `flex items-center justify-center w-77 h-11 
                  cursor-pointer font-semibold transition-all duration-300
                 ${isActive
                 ? "border border-b-2 text-[#AE7AFF] bg-white"
