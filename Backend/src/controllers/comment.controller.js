@@ -8,7 +8,7 @@ import { Video } from "../models/video.model.js";
 const getVideoComments = asyncHandler(async (req, res) => {
   
    const {videoId} = req.params
-   const {page = 1, limit = 10} = req.query
+   const {page=1, limit=10} = req.query
 
    if (!isValidObjectId(videoId)) {
      throw new ApiError(400, "video Id is missing")
@@ -41,47 +41,41 @@ const getVideoComments = asyncHandler(async (req, res) => {
      {
          $addFields: {
             isVideoOwner: {
-               $eq: [$owner._id, video.owner]
-            }
-         }
-     },
-     {
-         $skip: skip
-     },
-     {
-         $limit: parseInt(limit)
-     },
-     {
-         $group: {
-            _id: null,
-            ownerComments: {
-               $push: {
-                  $cond: [
-                     { $eq: ['$isVideoOwner', true] },                  
-                     '$$ROOT',
-                     '$$REMOVE'
-                  ]
-               }
-            },
-            otherComments: {
-               $push: {
-                  $cond: [
-                     { $eq: ['isVideoOwner', false ] },
-                     '$$ROOT',
-                     '$$REMOVE'
-                  ]
-               }
+               $eq: ["$owner._id", video.owner]
             }
          }
      },
      {
          $project: {
-            _id: 0,
-            ownerComments: 1,
-            otherComments: 1
+            createdAt: 1,
+            content: 1,
+            isVideoOwner: 1,
+            _id: 1,
+             owner: {
+              fullname: "$owner.fullname",
+              avatar: "$owner.avatar",
+              username: "$owner.username",
+            }
          }
-     }
+      },
+     {
+         $sort: { createdAt: -1 }
+     },
+     {
+         $facet: {
+            paginatedComments: [
+               { $skip: skip },
+               { $limit: parseInt(limit) }
+            ],
+            totalCount: [
+               { $count: "count"}
+            ]
+         }
+     },
+     
   ])
+  const paginatedComments = comments?.[0]?.paginatedComments ?? []
+  const totalComments = comments[0]?.totalCount?.[0]?.count || 0
 
   return res
       .status(200)
@@ -89,15 +83,15 @@ const getVideoComments = asyncHandler(async (req, res) => {
          new ApiResponse(
             200,
             {
-               ownerComments: comments[0]?.ownerComments || [],
-               otherComments: comments[0]?.otherComments || [],
-               page: parseInt(page),
-               limit: parseInt(limit)
+               comments: paginatedComments,
+               totalComments,
+               totalPages: Math.ceil(totalComments / limit),
+               page: Number(page),
+               limit: Number(limit)
             },
             "Video commentes fetched successfully"
          )
       )
-
 })
 
 const addComment = asyncHandler(async (req, res) => {
