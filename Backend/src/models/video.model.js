@@ -13,11 +13,11 @@ const videoSchema = new Schema(
         },
         title: {
             type: String, 
-            required: true
+            required: true,
         },
         description: {
             type: String, 
-            required: true
+            required: true,
         },
         duration: {
             type: String, 
@@ -42,8 +42,20 @@ const videoSchema = new Schema(
     },
     {
         timestamps: true
-    }
-)
+})
+
+
+// CREATE TEXT INDEX - This is REQUIRED for $text search
+videoSchema.index({ 
+    title: 'text', 
+    description: 'text' 
+}, {
+    weights: {
+        title: 10,
+        description: 5
+    },
+    name: 'video_text_index' // Give it a name for easy reference
+});
 
 videoSchema.plugin(mongooseAggregatePaginate)
 
