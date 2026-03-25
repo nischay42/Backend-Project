@@ -11,7 +11,7 @@ interface ChannelPayload {
   subscribers: number
   subscribed: number
   isSubscribed: boolean
-  _id: number
+  _id: string
 }
 
 
@@ -25,20 +25,25 @@ const ChannelLayout = () => {
   useEffect(() => {
     const str = username
     const user = str?.slice(1)
-    if (user) {
-      getChannelProfile(user)
-      .then((res) => setDetails(res.data))
-      .catch((error) => console.log(error))
+    if (!user) return
+    const fetchUser = async (user: string) => {
+      try {
+        const res = await getChannelProfile(user)
+        setDetails(res.data)        
+      } catch (error) {
+        console.log('user details not fetched');
+      }
     }
+    fetchUser(user)
   }, [username])
    
 
 
   return (
-    <div className="h-screen w-full">
+    <div className="h-screen w-full lg:px-5">
      {details && <ChannelHeader details={details} />}
-      <div className="px-6">
-        <Outlet context={{ channelId: details?._id }} />
+      <div className="p-2 lg:p-0">
+        <Outlet context={{ channelId: details?._id, username: details?.username }} />
       </div>
     </div>
   )
