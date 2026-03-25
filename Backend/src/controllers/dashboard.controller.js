@@ -9,144 +9,135 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 
 const getChannelStats = asyncHandler(async (req, res) => {
-    // TODO: Get the channel stats like total video views, total subscribers, total video, total likes etc.
     const userId = req.user?._id
 
     if (!isValidObjectId(userId)) {
-        throw new ApiError(400, "user Id not found");
+        throw new ApiError(400,  'User Id not found')
     }
-
-    const stats = await User.aggregate([
-        {
-            $match: {_id: new mongoose.Types.ObjectId(userId)}
-        },
-        { // GET USER DETAILS (username, avatar)
-            $project: {
-                username: 1,
-                avatar: 1,
-                fullname: 1 
-            }
-        },
-        { // LOOKUP VIDEOS CREATED BY USER
-            $lookup: {
-                from: "video",
-                localField: "_id",
-                foreignField: "owner",
-                as: "videos"
-            }
-        },
-        { // ADD VIDEO METADATA
-            $addFields: {
-                totalVideos: { $size: "$videos"},
-                totalViews: { $size: "videos.views"},
-                
-            }
-        },
-        { // LOOKUP SUBSCRIBERS COUNT
-            $lookup: {
-                from: "subscriptions",
-                localField: "_id",
-                foreignField: "channel",
-                as: "subscribers"
-            }
-        },
-        {
-            $addFields: {
-                totalSubscribers: { $size: "$subscribers"}
-            }
-        },
-        { // FOR EACH VIDEO → count likes/dislikes
-            $lookup: {
-                from: "likes",
-                let: { videoIds: "$videos._id" },
-                pipeline: [
-                    {
-                        $match: {
-                            $expr: {
-                                $in: ["$video", "$$videoIds"]
-                            }
-                        }
-                    },
-                    {
-                        $group: {
-                            _id: "$video",
-                            likes: {
-                                $sum: { $cond: [{ $eq: ["$reactionType", "like" ] }, 1, 0] }
-                            },
-                            dislikes: {
-                                $sum: { $cond: [{ $eq: ["$reactionType", "dislike"] }, 1, 0] }
-                            }
-                        }
-                    }
-                ],
-                as: "videoReactions"
-            }
-        },
-        { // MERGE REACTION DATA WITH VIDEO LIST
-            $addFields: {
-                videos: {
-                    $map: {
-                        input: "$videos",
-                        as: "vid",
-                        in: {
-                            _id: "$$vid._id",
-                            title: "$$vid.title",
-                            thumbnail: "$$vid.thumbnail",
-                            createdAt: "$$vid.createdAt",
-                            views: "$$vid.views",
-                            likes: {
-                                $let: {
-                                    vars: {
-                                        match: {
-                                            $first: {
-                                                $filter: {
-                                                    input: "$videoReactions",
-                                                    cond: { $seq: ["$$this._id", "$$vid._id"] }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    in: { $ifNull: ["$$match.likes", 0] }
-                                }
-                            },
-                            dislikes: {
-                                $let: {
-                                    vars: {
-                                        match: {
-                                            $first: {
-                                                $filter: {
-                                                    inpout: "$videoReactions",
-                                                    cond: { $eq: ["$$this._id", "$$vid._id"] }
-                                                }
-                                            }
-                                        }
-                                    },
-                                    in: { $ifNull: ["$$match.dislikes", 0] }
+    const [videoStats, subscriberCount] = await Promise.all([
+        Video.aggregate([
+            {
+                $match: { owner: new mongoose.Types.ObjectId(userId)}
+            },
+            {
+                $lookup: {
+                    from: 'likes',
+                    localField: '_id',
+                    foreignField: 'video',
+                    as: 'reactions'
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalViews: { $sum: '$views' },
+                    totalLikes: {
+                        $sum: {
+                            $size: {
+                                $filter: {
+                                    input: '$reactions',
+                                    cond: { $eq: ['$$this.reactionType', 'like']}
                                 }
                             }
                         }
                     }
                 }
             }
-        },
-        {
-            $project: {
-                subscribers: 0,
-                videoReactions: 0
-            }
-        }
-    ]);
+        ]),
+        Subscription.countDocuments({ channel: userId })
+    ])
 
-    return res
+    const stats = videoStats[0] || {
+        totalViews: 0,
+        totalLikes: 0
+    }
+
+   return res
         .status(200)
         .json(
-            new ApiResponse(200, stats[0], "Dashboard stats fetched successfully")
+            new ApiResponse(200, {...stats, totalSubscribers: subscriberCount }, "Dashboard stats fetched successfully")
         )
+})
+
+const getChannelVideosStats = asyncHandler(async (req, res) => {
+    const userId = req.user?._id
+    const { page = 1, limit = 10 } = req.query
+
+    if (!isValidObjectId(userId)) {
+        throw new ApiError(400, 'User Id not found')
+    }
+
+    const skip = (Number(page) - 1) * Number(limit)
+
+    const videos = await  Video.aggregate([
+        {
+            $match: { owner: new mongoose.Types.ObjectId(userId)}
+        },
+        {
+            $lookup: {
+                from: 'likes',
+                localField: '_id',
+                foreignField: 'video',
+                as: 'reactions'
+            }
+        },
+        {
+            $addFields: {
+                likesCount: {
+                    $size: {
+                        $filter: {
+                            input: '$reactions',
+                            cond: { $eq: ['$$this.reactionType', 'like']}
+                        }
+                    }
+                },
+                dislikesCount: {
+                    $size: {
+                        $filter: {
+                            input: '$reactions',
+                            cond: { $eq: ['$$this.reactionType', 'dislike']}
+                        } 
+                    }
+                }
+            }
+        },            
+        {
+            $project: {
+                title: 1,
+                thumbnail: 1,
+                views: 1,
+                isPublished: 1,
+                createdAt: 1,
+                likesCount: 1,
+                dislikesCount: 1
+            }
+        },
+        { $sort: { createdAt: -1 } },
+        { $skip: skip },
+        { $limit: Number(limit)}
+    ])
+    const totalVideos = await Video.countDocuments({
+        owner: new mongoose.Types.ObjectId(userId)
+    })
+
+    return res
+      .status(200)
+      .json(
+          new ApiResponse(200, {
+            videos,
+            pagination: {
+            currentPage: Number(page),
+            totalPages: Math.ceil(totalVideos / Number(limit)),
+            totalVideos,
+            hasMore: skip + videos.length < totalVideos
+            }}, "Channel videos fetched successfully")
+      )
 })
 
 const getChannelVideo = asyncHandler(async (req, res) => {
 
-    const {owner} = req.params
+    const { owner } = req.params
+    const sortType = req.query.sortType;
 
     if (!isValidObjectId(owner)) {
         throw new ApiError(400, "owner not found");
@@ -155,11 +146,12 @@ const getChannelVideo = asyncHandler(async (req, res) => {
     const videos = await Video.aggregate([
         {
             $match: {
-                owner: new mongoose.Types.ObjectId(owner)
+                owner: new mongoose.Types.ObjectId(owner),
+                isPublished: true
             }
         },
         {
-            $sort: { createdAt: -1 }
+            $sort: { createdAt: sortType === "asc" ? 1 : -1 || -1}
         },
         {
             $lookup: {
@@ -199,5 +191,6 @@ const getChannelVideo = asyncHandler(async (req, res) => {
 
 export {
     getChannelStats,
+    getChannelVideosStats,
     getChannelVideo
 }
