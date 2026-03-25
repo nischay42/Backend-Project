@@ -155,11 +155,11 @@ const UploadVideo = () => {
   // }
 
   return (
-    <div className="absolute h-full w-full lg:w-[80vw] flex items-center justify-center px-2 lg:px-0 pt-10 top-0">
+    <div className="absolute h-full w-[96vw] lg:w-[80vw] flex items-center justify-center pt-10 top-0">
       <div className="lg:mr-5 bg-black h-[90vh] w-full lg:w-[60vw] border border-white overflow-hidden">
         <div className="flex justify-between items-center px-7 py-3 border-b">
           <p>Upload Videos</p>
-          <div className="flex gap-2 lg:gap-5">
+          <div className="flex gap-3 lg:gap-5">
             <UIButton 
               children="Cancel" 
               padding='lg:px-4 lg:py-2.5 px-2 py-0' 
@@ -203,7 +203,7 @@ const UploadVideo = () => {
           </div>
 
           <div className="flex flex-col items-center w-full mb-8">
-            <div className="w-3/4 mt-6">
+            <div className="w-[85vw] lg:w-3/4 mt-6">
               <label>Thumbnail <span className='text-red-500'>*</span></label>
               <div className="border border-white lg:p-3">
                 <div className="flex items-center justify-between gap-3">
@@ -253,7 +253,7 @@ const UploadVideo = () => {
               />
             </div>
 
-            <div className="flex flex-col gap-6 w-3/4 mt-6">
+            <div className="flex flex-col gap-6 w-[85vw] lg:w-3/4 mt-6">
               <Input 
                 label='Title'
                 required
@@ -278,7 +278,7 @@ const UploadVideo = () => {
               </div>
             </div>
 
-            <div className="w-3/4 mt-6">
+            <div className="w-[85vw] lg:w-3/4 mt-6">
               <label htmlFor="category">
                 Choose a category <span className='text-red-500'>*</span>
               </label>
@@ -298,7 +298,7 @@ const UploadVideo = () => {
               </select>
             </div>
 
-            <div className="w-3/4 mb-8 lg:mb-0 mt-6">
+            <div className="w-[85vw] lg:w-3/4 mb-8 lg:mb-0 mt-6">
               <ToggleSwitch
                 checked={isPublished}
                 onChange={setIsPublished}

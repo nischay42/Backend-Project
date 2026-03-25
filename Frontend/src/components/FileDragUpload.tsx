@@ -61,7 +61,7 @@ const FileDragUpload = ({ onFileSelect }: FileDragUploadProps) => {
   return (
     <div 
       className={`
-        border-2 border-dashed pb-6 w-full mt-4 flex flex-col items-center
+        border-2 border-dashed pb-6 w-[85vw] lg:w-full mt-4 flex flex-col items-center
         transition-colors duration-200
         ${isDragging ? 'border-purple-500 bg-purple-500/10' : 'border-gray-600'}
       `}
