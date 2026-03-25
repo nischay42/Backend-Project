@@ -1,31 +1,29 @@
 import api from "./axios"
 
 const getVideoComments = async (videoId: string, page: number, limit: number) => {
-    
-    const res = await api.get(`/${videoId}`, {
-        params: {
-            page,
-            limit
-        },
-    })
+
+    const params = new URLSearchParams()
+    params.append("page", page.toString())
+    params.append('limit', limit.toString())
+    const res = await api.get(`/comments/${videoId}?${params.toString()}`)
     return res.data
 }
 
 const addComment = async (videoId: string, content: string) => {
     
-    const res = await api.post(`/${videoId}`, content)
+    const res = await api.post(`/comments/${videoId}`, {content})
     return res.data
 }
 
 const updateComment = async (commentId: string, content: string) => {
     
-    const res = await api.patch(`/c/${commentId}`, content)
+    const res = await api.patch(`/comments/c/${commentId}`, {content})
     return res.data
 }
 
 const deleteCommen = async (commentId: string) => {
     
-    const res = await api.delete(`/c/${commentId}`)
+    const res = await api.delete(`/comments/c/${commentId}`)
     return res.data
 }
 

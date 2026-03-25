@@ -1,41 +1,44 @@
 import api from './axios'
 
-type videoLike = {
-    videoId: string,
-    type: string
-}
-const toggoleVideoLike = async (params: videoLike) => {
+
+const toggoleVideoLike = async (videoId: string, reactionType: string) => {
     
-    const res = await api.post(`/v/${params.videoId}/${params.type}`)
+    const res = await api.post(`/likes/v/${videoId}/${reactionType}`)
     return res.data
 
 }
 
-type commentLike = {
-    commentId: string,
-    type: string
-}
-
-const toggoleCommentLike = async (params: commentLike) => {
+const toggoleCommentLike = async (commentId: string, reactionType: string) => {
     
-    const res = await api.post(`/c/${params.commentId}/${params.type}`)
+    const res = await api.post(`/likes/c/${commentId}/${reactionType}`)
     return res.data
 }
 
-type tweeetLike = {
-    tweetId: string,
-    type: string
-}
-
-const toggoleTweetLike = async (params: tweeetLike) => {
+const toggoleTweetLike = async (tweetId: string, reactionType: string) => {
     
-    const res = await api.post(`/t/${params.tweetId}/${params.type}`)
+    const res = await api.post(`/likes/t/${tweetId}/${reactionType}`)
     return res.data
 }
 
 const getLikedVideos = async () => {
     
-    const res = await api.post("/videos")
+    const res = await api.post(`/likes/videos`)
+    return res.data
+}
+
+const getVideoLikes = async (videoId: string) => {
+    
+    const res = await api.get(`/likes/v/${videoId}`)
+    return res.data
+}
+const getCommentLikes = async (commentId: string) => {
+    
+    const res = await api.get(`/likes/c/${commentId}`)
+    return res.data
+}
+const getTweetLikes = async (tweetId: string) => {
+    
+    const res = await api.get(`/likes/t/${tweetId}`)
     return res.data
 }
 
@@ -43,5 +46,8 @@ export {
     toggoleVideoLike,
     toggoleCommentLike,
     toggoleTweetLike,
-    getLikedVideos
+    getLikedVideos,
+    getVideoLikes,
+    getCommentLikes,
+    getTweetLikes
 }

@@ -10,31 +10,14 @@ type UserReg = {
 }
 
 const userRegister = async (details: UserReg) => {
-    // const formData =  new FormData();
-
-    // formData.append("fullname", details.fullname)
-    // formData.append("email", details.email)
-    // formData.append("username", details.username)
-    // formData.append("password", details.password)
-
-    // if (details.avatar) {
-    //     formData.append("avatar", details.avatar)
-    // }
-    // if (details.coverImage) {
-    //     formData.append("coverImage", details.coverImage)
-    // }
-
-    const res = await api.post("/users/register", details, {
-        // headers: {
-        //     "Content-Type": "multipart/form-data",
-        // },
-    })
-
-    return res
+    const res = await api.post("/users/register", details)
+    
+    return res.data
 }
 
 type UserLog = {
-    email: string,
+    email?: string,
+    username?: string,
     password: string
 }
 
@@ -53,7 +36,7 @@ const userLogout = async () => {
 type passChang = {
     oldPassword: string,
     newPassword: string,
-    confPassword: string
+    confirmPassword: string
 }
 
 const userPasswordChange = async (params: passChang) => {
@@ -69,8 +52,9 @@ const currentUser = async () => {
 }
 
 type accountUpdateDetail = {
-    fullname?: string,
-    email?: string
+    fullname: string,
+    email: string,
+    username: string
 }
 
 const updateAccountDetails = async (payload: accountUpdateDetail) => {
@@ -79,15 +63,27 @@ const updateAccountDetails = async (payload: accountUpdateDetail) => {
     return res.data
 }
 
-const updateAvatar = async (avatarImg?: File) => {
-    
-    const res = await api.patch("/users/avatar", avatarImg)
+const updateAvatar = async (avatarFile: File) => {
+    const formData = new FormData()
+    formData.append('avatarImage', avatarFile)
+
+    const res = await api.patch("/users/avatar", formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
     return res.data
 }
 
-const updateCoverImage = async (coverImg?: File) => {
+const updateCoverImage = async (coverImageFile: File) => {
+    const formData = new FormData()
+    formData.append('coverImage', coverImageFile)
     
-    const res = await api.patch("/users/cover-image", coverImg)
+    const res = await api.patch("/users/cover-image", formData, {
+        headers: {
+            'Content-Type' : 'multipart/form-data'
+        }
+    })
     return res.data
 }
 
