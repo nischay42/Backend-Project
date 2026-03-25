@@ -37,6 +37,18 @@ const userSchema = new Schema(
                 ref: "Video"
             }
         ],
+        savedPlaylists: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Playlist"
+            }
+        ],
+        watchLater: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Video"
+            }
+        ],
         password: {
             type: String,
             required: [true, 'Password is required']
