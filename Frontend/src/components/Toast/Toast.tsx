@@ -23,21 +23,19 @@ export const Toast = ({
 
     useEffect(() => {
         // slide in
-      const slideInTimer = setTimeout(() => setIsVisible(true), 10)
+      setTimeout(() => setIsVisible(true), 10)
     
     //   auto hide after duration
-      const hidetimer = setTimeout(() => {
+      const timer = setTimeout(() => {
         setIsLeaving(true)
         setTimeout(() => {
+            setIsVisible(false)
             onClose()
         }, 300)
       }, duration);
 
-      return () => {
-        clearTimeout(slideInTimer)
-        clearTimeout(hidetimer)
-      }
-    }, [id])
+      return () => clearTimeout(timer)
+    }, [duration, onClose])
     
     const getIcon = () => {
         switch (type) {
