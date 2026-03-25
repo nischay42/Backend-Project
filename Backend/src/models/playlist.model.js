@@ -8,10 +8,9 @@ const playlistShema = new Schema(
             required: true,
         },
         description: {
-            type: String,
-            required: true,
+            type: String
         },
-        video: [
+        videos: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "Video"
@@ -20,6 +19,10 @@ const playlistShema = new Schema(
         owner: {
             type: Schema.Types.ObjectId,
             ref: "User"
+        },
+        isPrivate: {
+            type: Boolean,
+            default: true
         }
     },
     {
