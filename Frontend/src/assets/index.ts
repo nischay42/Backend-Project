@@ -13,6 +13,9 @@ import thumbsDown from './thumbs-down.svg'
 import plus from './plus.png'
 import upload from './upload.svg'
 import profile from './profile.jpg'
+import followLight from './users-plus-light.svg'
+import following from './following.svg'
+import playlist from './playlist.svg'
 
 
 export {
@@ -26,9 +29,12 @@ export {
     support,
     search,
     follow,
+    followLight,
     thumbsUp,
     thumbsDown,
     plus,
     upload,
-    profile
+    profile,
+    following,
+    playlist
 }
