@@ -69,9 +69,9 @@ const FileDragUpload = ({ onFileSelect }: FileDragUploadProps) => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="bg-[#101014] mt-5 h-36 w-36 flex items-center justify-center rounded-full">
-        <div className="bg-[#E4D3FF] h-28 w-28 flex items-center justify-center rounded-full">
-          <img src={upload} className='h-15' alt="upload icon" />
+      <div className="bg-[#101014] mt-5 h-30 w-30 lg:h-36 lg:w-36 flex items-center justify-center rounded-full">
+        <div className="bg-[#E4D3FF] h-23 w-23 lg:h-28 lg:w-28 flex items-center justify-center rounded-full">
+          <img src={upload} className='lg:h-15 h-12' alt="upload icon" />
         </div>
       </div>
       
