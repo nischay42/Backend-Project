@@ -7,24 +7,46 @@ import {
     getUserPlaylists,
     removeVideoFromPlaylist,
     updatePlaylist,
+    savePlaylist,
+    removeFromSavedPlaylist,
+    getSavedPlaylists,
+    addToWatchLater,
+    removeFromWatchLater,
+    getWatchLaterVideos,
+    isVideoInWatchLater,
+    getAllPlaylists,
+    getPublicPlaylist,
+    checkPlaylistSaved
 } from "../controllers/playlist.controller.js"
-import {verifyJWT} from "../middlewares/auth.middleware.js"
+import {verifyJWT, optionalVerifyJWT} from "../middlewares/auth.middleware.js"
 
 const router = Router();
 
+router.route('/public').get(optionalVerifyJWT, getPublicPlaylist)
+
 router.use(verifyJWT)
 
-router.route("/").post(verifyJWT, createPlaylist)
+router.route('/check-saved/:playlistId').get(checkPlaylistSaved)
+router.route("/").post(createPlaylist)
+router.route('/all').get(getAllPlaylists)
+router.route("/saved").get(getSavedPlaylists)
+router.route("/watch-later").get(getWatchLaterVideos)
+router.route("/watch-later/check/:videoId").get(isVideoInWatchLater)
+router.route("/watch-later/add/:videoId").patch(addToWatchLater)
+router.route("/watch-later/remove/:videoId").patch(removeFromWatchLater)
 
 router
     .route("/:playlistId")
-    .get(verifyJWT, getPlaylistById)
-    .patch(verifyJWT, updatePlaylist)
-    .delete(verifyJWT, deletePlaylist);
+    .get(getPlaylistById)
+    .patch(updatePlaylist)
+    .delete(deletePlaylist);
 
-router.route("/add/:videoId/:playlistId").patch(verifyJWT, addVideoToPlaylist)
-router.route("/remove/:videoId/:playlistId").patch(verifyJWT, removeVideoFromPlaylist)
+router.route("/save/:playlistId").patch(savePlaylist)
+router.route("/unsave/:playlistId").patch(removeFromSavedPlaylist)
 
-router.route("/user/:userId").get(verifyJWT, getUserPlaylists)
+router.route("/add/:videoId/:playlistId").patch(addVideoToPlaylist)
+router.route("/remove/:videoId/:playlistId").patch(removeVideoFromPlaylist)
+
+router.route("/user/:videoId").get(getUserPlaylists)
 
 export default router

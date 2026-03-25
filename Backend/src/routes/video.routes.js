@@ -6,15 +6,20 @@ import {
     publishAVideo,
     togglePublisherStatus,
     updateVideo,
+    addVideoView
 } from "../controllers/video.controller.js"
-import {verifyJWT} from "../middlewares/auth.middleware.js"
+import {verifyJWT, optionalVerifyJWT} from "../middlewares/auth.middleware.js"
 import {upload} from "../middlewares/multer.middleware.js"
 
 const router = Router()
 router.route('/').get(getAllVideos)
+router.route('/:videoId/view', ).post(optionalVerifyJWT, addVideoView)
+router
+    .route("/:videoId")
+    .get(getVideoById);
+
+
 router.use(verifyJWT)
-
-
 router
     .route("/")
     .post( 
