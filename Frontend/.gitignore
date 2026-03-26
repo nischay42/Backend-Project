@@ -25,3 +25,8 @@ dist-ssr
 
 *.exe
 VSCodeUserSetup*.exe
+
+**And add `.env` to your Frontend `.gitignore`:**
+```
+.env
+.env.local
