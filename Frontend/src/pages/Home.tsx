@@ -26,16 +26,16 @@ const Home = () => {
 
   const videoCategory = [
    "All",
-   "Entertainment",
    "Music",
    "Gaming",
-   "People & Blogs",
-   "Comedy",
-   "How to & Style",
    "Education",
    "Science & Technology",
    "Sports",
-   "Film & Animation"
+   "Film & Animation",
+   "How to & Style",
+   "Comedy",
+   "People & Blogs",
+   "Entertainment",
   ];
 
 
