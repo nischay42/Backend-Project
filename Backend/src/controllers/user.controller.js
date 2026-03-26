@@ -68,15 +68,15 @@ const registerUser = asyncHandler( async (req, res) => {
 
     const refreshTokenoptions = {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         maxAge: 30 * 24 * 60 * 60 * 1000
     }
 
     const accessTokenoptions = {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         maxAge: 2 * 24 * 60 * 60 * 1000
     }
 
@@ -129,15 +129,15 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const refreshTokenoptions = {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         maxAge: 30 * 24 * 60 * 60 * 1000
     }
 
     const accessTokenoptions = {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         maxAge: 2 * 24 * 60 * 60 * 1000
     }
 
@@ -211,15 +211,15 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     
         const refreshTokenoptions = {
             httpOnly: true,
-            secure: false,
-            sameSite: "strict",
+            secure: true,
+            sameSite: "none",
             maxAge: 30 * 24 * 60 * 60 * 1000 
         }
 
         const accessTokenoptions = {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         maxAge: 2 * 24 * 60 * 60 * 1000
     }
     
