@@ -12,7 +12,7 @@ interface playlistProp {
     isPrivate?: boolean
     fullname?: string
     username?: string
-    videoId: string
+    // videoId: string
     playlistId: string
     isUserPlaylist?: boolean
 }
@@ -25,7 +25,7 @@ const PlaylistCard = ({
     isPrivate,
     fullname,
     username,
-    videoId,
+    // videoId,
     playlistId,
     isUserPlaylist=true,
 

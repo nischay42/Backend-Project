@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import { Eye, UserRoundCheck, Heart, Pencil, Trash2 } from 'lucide-react'
 import { getChannelStats, getChannelVideosStats } from '../api/dashboard.api'
 import { deleteVideo, togglePublisherStatus  } from '../api/video.api'
-import { useNavigate } from 'react-router-dom'
 import { useToastContext } from '../context/ToastContext'
 import Button from '../components/Button'
 import { plus } from '../assets'
@@ -33,7 +32,6 @@ const Dashboard = () => {
   const [videos, setVideos] = useState<Video[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const fullname  = useAppSelector((state: RootState) => state.auth.user?.fullname)
-  const navigate = useNavigate()
   const toast = useToastContext()
 
   useEffect(() => {
@@ -93,9 +91,9 @@ const Dashboard = () => {
     }
   }
 
-  const handleEdit = (videoId: string) => {
-    navigate(`/edit-video/${videoId}`)
-  }
+  // const handleEdit = (videoId: string) => {
+  //   navigate(`/edit-video/${videoId}`)
+  // }
 
   return (
     <div className="min-h-screen bg-black text-white p-6">

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { logout } from '../../features/auth/authSlice'
 import UIButton from '../UIButton'
-import logo from "../../../public/Logo.svg"
+import logo from "/Logo.svg"
 import type { RootState } from '../../app/store'
 import { profile } from '../../assets'
 

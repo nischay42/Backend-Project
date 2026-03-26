@@ -19,7 +19,6 @@ const ToastContainer = ({ toasts, onRemove }: ToastContainerProps) => {
         {toasts.map((toast) => (
             <div key={toast.id} className="pointer-events-auto">
                 <Toast
-                    id={toast.id}
                     message={toast.message}
                     type={toast.type}
                     duration={toast.duration}

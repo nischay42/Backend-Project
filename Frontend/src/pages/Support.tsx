@@ -164,7 +164,7 @@ const Support = () => {
       {/* Header */}
       <div className="max-w-6xl mx-auto mb-12">
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-linear-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
             How can we help you?
           </h1>
           <p className="text-gray-400 text-lg">
@@ -258,9 +258,9 @@ const Support = () => {
                           >
                             <span className="font-medium text-lg">{faq.question}</span>
                             {isExpanded ? (
-                              <ChevronUp className="w-5 h-5 text-purple-400 flex-shrink-0" />
+                              <ChevronUp className="w-5 h-5 text-purple-400 shrink-0" />
                             ) : (
-                              <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                              <ChevronDown className="w-5 h-5 text-gray-400 shrink-0" />
                             )}
                           </button>
                           
@@ -346,7 +346,7 @@ const Support = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <>

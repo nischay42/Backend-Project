@@ -2,7 +2,7 @@ import VideoCard from "../components/video/VideoCard"
 import { getAllVideo } from "../api/video.api"
 import { useEffect, useState, useRef, useCallback } from "react"
 import { useToastContext } from "../context/ToastContext"
-import { ChevronRight, ChevronLeft, Loader2 } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { getPublicPlaylists } from "../api/playlist.api";
 import PlaylistCard from "../components/channel/PlaylistCard";
 import VideoCardSkeleton from "../components/video/VideoCardSkeleton";
@@ -293,7 +293,6 @@ const Home = () => {
                       fullname={item?.ownerFullname}
                       username={item?.ownerUsername}
                       playlistId={item._id}
-                      videoId={item.videoId}
                       isUserPlaylist={false}
                     />
                   </div>

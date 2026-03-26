@@ -33,7 +33,6 @@ const VideoCardMenu = ({
   const [isWatchLater, setIsWatchLater] = useState(false)
   const toast = useToastContext()
   const { isAuthenticated } = useAppSelector((state) => state.auth)
-  const [copied, setCopied] = useState(false)
   const [isSaved, setIsSaved] = useState<boolean>(true)
 
   useEffect(() => {
@@ -168,9 +167,7 @@ const VideoCardMenu = ({
       const fullUrl = `${window.location.origin}/watch?v=${videoId}`
       await navigator.clipboard.writeText(fullUrl)
 
-      setCopied(true)
       toast.success('Link copied successfully')
-      setTimeout(() => setCopied(false), 2000)
     } catch (error) {
       console.error('Failed to copy:', error)
       toast.error('Failed to copy link')

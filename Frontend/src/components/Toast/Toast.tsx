@@ -8,7 +8,6 @@ interface ToastProps {
     type?: ToastType
     duration?: number
     onClose: () => void
-    id: string
 }
 
 export const Toast = ({
@@ -16,7 +15,6 @@ export const Toast = ({
     type ='info',
     duration = 4000,
     onClose,
-    id
 }: ToastProps) => {
     const [isVisible, setIsVisible] = useState(false)
     const [isLeaving, setIsLeaving] = useState(false)

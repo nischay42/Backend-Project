@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useAppDispatch } from '../app/hooks'
 import { signup } from '../features/auth/authSlice'
-import logo from "../../public/Logo.svg"
+import logo from "/Logo.svg"
 import { Link } from 'react-router-dom'
 import { useToastContext } from '../context/ToastContext'
 import Input from '../components/Input'

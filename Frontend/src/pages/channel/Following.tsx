@@ -1,7 +1,7 @@
 import FollowingCard from '../../components/channel/FollowingCard'
 import { search } from '../../assets'
 import { useEffect, useState } from 'react'
-import { href, useOutletContext } from 'react-router-dom'
+import { useOutletContext } from 'react-router-dom'
 import { getChannelSubscribersList } from '../../api/subscription.api'
 import { useToastContext } from '../../context/ToastContext'
 

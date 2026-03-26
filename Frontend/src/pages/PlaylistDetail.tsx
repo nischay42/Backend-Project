@@ -39,7 +39,6 @@ const PlaylistDetail = () => {
   const [newDescription, setNewDescription] = useState('')
   const [showUpdatesCard, setShowUpdatesCard] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
-  const [copied, setCopied] = useState(false)
   const username  = useAppSelector((state: RootState) => state.auth.user?.username)
   
   const modalRef = useRef<HTMLDivElement>(null)
@@ -166,10 +165,9 @@ const PlaylistDetail = () => {
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href)
-      setCopied(true)
+
       toast.success('Link copied successfully')
       // Reset after 2 seconds
-      setTimeout(() => setCopied(false), 2000)
     } catch (error) {
       console.error('Failed to copy:', error)
     }

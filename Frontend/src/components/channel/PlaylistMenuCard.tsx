@@ -5,7 +5,7 @@ import {
   removeFromSavedPlaylist,
   checkPlaylistSaved,
   deletePlaylist,
-  removeVideoFromPlaylist
+  // removeVideoFromPlaylist
 } from "../../api/playlist.api";
 import { useToastContext } from "../../context/ToastContext";
 import { useAppSelector } from "../../app/hooks";
@@ -25,7 +25,6 @@ const VideoCardMenu = ({
   const [showMenu, setShowMenu] = useState(false)
   const toast = useToastContext()
   const { isAuthenticated } = useAppSelector((state) => state.auth)
-  const [copied, setCopied] = useState(false)
   const [isSaved, setIsSaved] = useState<boolean>()
   
   // Save playlist
@@ -99,18 +98,6 @@ const handleDeletePlaylist = async () => {
   const handleMenuClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     setShowMenu(!showMenu)
-  }
-
-    const handleShare = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-      setCopied(true)
-      toast.success('Link copied successfully')
-      // Reset after 2 seconds
-      setTimeout(() => setCopied(false), 2000)
-    } catch (error) {
-      console.error('Failed to copy:', error)
-    }
   }
 
   return (

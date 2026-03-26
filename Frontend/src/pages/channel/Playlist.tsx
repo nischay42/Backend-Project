@@ -44,7 +44,6 @@ const Playlist = () => {
                     fullname={playlist?.owner?.fullname}
                     username={playlist?.owner?.username}
                     playlistId={playlist._id}
-                    videoId={playlist.videoId}
                 />
         ))}</>)}
     </div>
