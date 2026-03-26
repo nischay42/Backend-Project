@@ -1,3 +1,6 @@
+/// <reference types="vite/client" />
+import.meta.env
+
 declare module '*.svg' {
   const content: string
   export default content
