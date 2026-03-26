@@ -64,7 +64,7 @@ const SearchResult = () => {
           {isLoading
             ? (
                 Array.from({ length: 7 }).map((_, i) => (
-                <WatchVideoCardSkeleton key={i} videoWidth="lg:w-2/5 w-1/2" />
+                <WatchVideoCardSkeleton key={i} videoWidth="lg:w-2/6 w-1/2" videoHeight='h-30 md:h-50 lg:h-[30vh]' />
             ))
             ) : (<>{videos && videos.map((video) => (
             <WatchVideoCard
@@ -79,6 +79,11 @@ const SearchResult = () => {
               views={video.views}
               createdAt={video.createdAt}
               videoId={video._id}
+              videoHeight='h-30 md:h-50 lg:h-[35vh]'
+              videoWidth='lg:w-[40vw] md:w-[10vw] w-full'
+              titleSize='lg:text-xl'
+              avatarSize='h-8 w-8'
+              usernameSize='lg:text-md my-4'
             />
           ))}</>)}
         </div>

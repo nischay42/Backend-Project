@@ -1,12 +1,14 @@
 const WatchVideoCardSkeleton = ({
   videoWidth = 'lg:w-[25vw]',
-  detailWidth = 'w-full',
+  videoHeight='h-30',
+  detailWidth = 'w-full'
 }: {
   videoWidth?: string
+  videoHeight?: string
   detailWidth?: string
 }) => {
   return (
-    <div className="border border-[#ffffff20] w-[95vw] lg:w-auto p-1 h-30 lg:h-[22vh] relative">
+    <div className={`border border-[#ffffff20] w-[95vw] lg:w-auto p-1 ${videoHeight} lg:h-[22vh] relative`}>
       <div className="flex z-0 top-0 h-full w-full">
 
         {/* Thumbnail skeleton */}

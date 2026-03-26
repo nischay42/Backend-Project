@@ -21,6 +21,10 @@ interface videoProp  {
     isPlaylistViewCard?: boolean
     playlistId?: string
     isUserPlaylist?: boolean
+    videoHeight?: string
+    titleSize?: string
+    avatarSize?: string
+    usernameSize?: string
 }
 
 const WatchVideoCard = ({
@@ -34,11 +38,15 @@ const WatchVideoCard = ({
     createdAt,
     videoId,
     avatar,
-    detailWidth='w-full',
-    videoWidth='lg:w-[25vw] md:w-[10vw] w-full',
     isPlaylistViewCard,
     playlistId,
-    isUserPlaylist
+    isUserPlaylist,
+    detailWidth='w-full',
+    videoWidth='lg:w-[25vw] md:w-[10vw] w-full',
+    videoHeight='h-30 md:h-50 lg:h-[20vh]',
+    titleSize='lg:text-md',
+    avatarSize='lg:h-7 lg:w-7',
+    usernameSize='lg:text-sm'
 }: videoProp) => {
     const [isHovering, setIsHovering] = useState(false);
     // const [maxLength, setMaxLength] = useState(40)
@@ -58,7 +66,7 @@ const WatchVideoCard = ({
 
   return (
     <div 
-      className="border border-[#ffffffc4] p-0.5 lg:p-1 h-30 md:h-50 lg:h-[20vh] relative cursor-pointer" 
+      className={`border border-[#ffffffc4] p-0.5 lg:p-1 ${videoHeight} relative cursor-pointer`}
       onClick={() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         navigate(`/watch?v=${videoId}`);
@@ -102,29 +110,29 @@ const WatchVideoCard = ({
         <div className={`flex ${detailWidth} pl-2 h-full relative `}>
           <div className="flex flex-col justify-between">
             <div className="md:text-sm lg:text-md lg:font-medium">
-              <p className="text-sm lg:text-md lg:font-medium">{textBreak}</p>
+              <p className={`text-sm ${titleSize} lg:font-medium`}>{textBreak}</p>
             </div>
             <div >
               <div className=" text-white text-sm lg:text-lg flex items-center gap-2">
-                <div className="flex w-6 lg:w-7">
+                <div className={`flex w-6 ${avatarSize}`}>
                   <img 
                     onClick={(e) => {
                       e.stopPropagation()
                       if(username) navigate(`/@${username}`)
                     }}
                     src={avatar || profile}
-                    className='h-6 w-6 lg:h-7 lg:w-7 rounded-full object-cover object-center'
+                    className={`h-6 w-6  ${avatarSize} rounded-full object-cover object-center`}
                   />
                 </div>
                 <p 
-                  className="capitalize text-sm"
+                  className={`capitalize ${usernameSize}`}
                   onClick={(e) => {
                     e.stopPropagation()
                     if(username) navigate(`/@${username}`)
                   }} 
                 >{fullname}</p>
               </div>
-              <div className="flex gap-2 mt-1 text-xs lg:text-sm font-light text-white ">
+              <div className={`flex gap-2 mt-1 text-xs ${usernameSize} font-light text-white `}>
                 <p>{views} Views</p>
                 <p>•</p>
                 <p>{getTimeAgo(createdAt)}</p>
