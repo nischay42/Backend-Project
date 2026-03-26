@@ -133,7 +133,7 @@ const HamburgerMenu = ({ isOpen, onClose }: HamburgerMenuProps) => {
         {/* Footer */}
         <div className="p-4 border-t border-gray-800">
           <p className="text-gray-500 text-xs text-center">
-            © 2024 Your Platform
+            © 2026 All Rights Reserved
           </p>
         </div>
       </div>
