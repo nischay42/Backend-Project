@@ -30,3 +30,6 @@ VSCodeUserSetup*.exe
 ```
 .env
 .env.local
+
+tsconfig.app.tsbuildinfo
+*.tsbuildinfo
