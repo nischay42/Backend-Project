@@ -168,8 +168,6 @@ const updateVideo = async (videoId: string, updateDetails: UpdateVideoPayload) =
 }
 
 const togglePublisherStatus = async (videoId: string, toggleStatus: boolean) => {
-    console.log(toggleStatus);
-    console.log(videoId);
     
     const res = await api.patch(`/videos/toggle/publish/${videoId}`, {toggleStatus})
     return res.data
