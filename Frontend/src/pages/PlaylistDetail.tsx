@@ -32,6 +32,7 @@ const PlaylistDetail = () => {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const playlistId = searchParams.get('p')
+  const playlistQuery = playlistId ? `&p=${playlistId}` : ''
   const [firstVideoThumbnail, setFirstVideoThumbnail] = useState<string | undefined>(undefined)
   const [playlist, setPlaylist] = useState<PlaylistPayload | null>(null)
   const [privacyStatus, setPrivacyStatus] = useState<boolean>(false)
@@ -152,14 +153,12 @@ const PlaylistDetail = () => {
     }
 
     const firstVideo = playlist.videos[0]
-    localStorage.setItem('currentPlaylist', playlistId || '')
-    navigate(`/watch?v=${firstVideo._id}`)
+    navigate(`/watch?v=${firstVideo._id}${playlistQuery}`)
   }
 
   // Handle video click
   const handleVideoClick = (videoId: string) => {
-    localStorage.setItem('currentPlaylist', playlistId || '')
-    navigate(`/watch?v=${videoId}`)
+    navigate(`/watch?v=${videoId}${playlistQuery}`)
   }
 
   const handleShare = async () => {

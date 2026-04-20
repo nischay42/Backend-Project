@@ -55,31 +55,31 @@ const VideoPlayer = () => {
   const viewCountedRef = useRef(false)
    
   const videoId = searchParams.get('v')
+  const playlistId = searchParams.get('p')
   const toast = useToastContext()
   const { isAuthenticated } = useAppSelector((state) => state.auth)
 
   const page = 1
   const limit = 10
 
-  // Check for playlist in localStorage on mount
   useEffect(() => {
-    const playlistId = localStorage.getItem('currentPlaylist')
-    
-    if (playlistId) {
-      const fetchPlaylist = async () => {
-        try {
-          const res = await getPlaylist(playlistId)
-          setPlaylist(res.data)
-        } catch (error) {
-          console.error('Failed to fetch playlist', error)
-          localStorage.removeItem('currentPlaylist')
-        }
-      }
-      fetchPlaylist()
-    } else {
+    if (!playlistId) {
       setPlaylist(null)
+      return
     }
-  }, [videoId])
+
+    const fetchPlaylist = async () => {
+      try {
+        const res = await getPlaylist(playlistId)
+        setPlaylist(res.data)
+      } catch (error) {
+        console.error('Failed to fetch playlist', error)
+        setPlaylist(null)
+      }
+    }
+
+    fetchPlaylist()
+  }, [playlistId])
 
   // fetch video for video player
   useEffect(() => {
@@ -159,12 +159,11 @@ const VideoPlayer = () => {
   
   // Handle playlist video click - keep playlist context
   const handlePlaylistVideoClick = (video: any) => {
-    navigate(`/watch?v=${video._id}`)
+    navigate(`/watch?v=${video._id}${playlistId ? `&p=${playlistId}` : ''}`)
   }
 
   // Handle suggestion video click - remove playlist context
   const handleSuggestionVideoClick = (videoId: string) => {
-    localStorage.removeItem('currentPlaylist')
     navigate(`/watch?v=${videoId}`)
   }
 
@@ -176,7 +175,7 @@ const VideoPlayer = () => {
     if (currentIndex === -1 || currentIndex >= playlist.videos.length - 1) return
     
     const nextVideo = playlist.videos[currentIndex + 1]
-    navigate(`/watch?v=${nextVideo._id}`)
+    navigate(`/watch?v=${nextVideo._id}${playlistId ? `&p=${playlistId}` : ''}`)
   }
 
   // handle comment submit

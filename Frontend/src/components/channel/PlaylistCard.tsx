@@ -41,9 +41,7 @@ const PlaylistCard = ({
             
             if (playlist.videos && playlist.videos.length > 0) {
                 const firstVideo = playlist.videos[0]
-                // Navigate with playlistId in localStorage
-                localStorage.setItem('currentPlaylist', playlistId)
-                navigate(`/watch?v=${firstVideo._id}`)
+                navigate(`/watch?v=${firstVideo._id}&p=${playlistId}`)
             }
         } catch (error) {
             console.error('Failed to load playlist', error)
