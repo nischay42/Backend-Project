@@ -23,6 +23,7 @@ import {verifyJWT, optionalVerifyJWT} from "../middlewares/auth.middleware.js"
 const router = Router();
 
 router.route('/public').get(optionalVerifyJWT, getPublicPlaylist)
+router.route('/:playlistId').get(optionalVerifyJWT, getPlaylistById)
 
 router.use(verifyJWT)
 
@@ -37,7 +38,6 @@ router.route("/watch-later/remove/:videoId").patch(removeFromWatchLater)
 
 router
     .route("/:playlistId")
-    .get(getPlaylistById)
     .patch(updatePlaylist)
     .delete(deletePlaylist);
 

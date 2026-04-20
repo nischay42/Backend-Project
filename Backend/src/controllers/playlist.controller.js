@@ -267,7 +267,7 @@ const getPlaylistById = asyncHandler(async (req, res) => {
         updatedAt: playlist.updatedAt,
         owner: playlist.owner ? {
             _id: playlist.owner._id,
-            isUser: playlist.owner._id.toString() === userId.toString(),
+            isUser: userId ? playlist.owner._id.toString() === userId.toString() : false,
             fullname: playlist.owner.fullname,
             username: playlist.owner.username,
             avatar: playlist.owner.avatar
