@@ -233,7 +233,7 @@ const VideoPlayerDetails = ({
     
     useEffect(() => {
       const fetchWatchLaterStatus = async () => {
-        if (!videoId) return
+        if (!videoId || !isAuthenticated) return
         try {
           const res = await isVideoInWatchLater(videoId)
           setIsWatchLater(Boolean(res?.data?.isInWatchLater))

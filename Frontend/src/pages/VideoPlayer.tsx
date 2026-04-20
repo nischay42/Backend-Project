@@ -244,6 +244,7 @@ const VideoPlayer = () => {
               padding='px-4 py-2.5' 
             />
           </div>
+          <div className="z-10`0">
           {fetchComments && 
             fetchComments.map((comment) => (
               <TweetCard 
@@ -257,6 +258,7 @@ const VideoPlayer = () => {
               />
             ))
           }
+          </div>
         </div>
       </div>          
 

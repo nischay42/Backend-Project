@@ -19,6 +19,11 @@ const VideoPlayerCard = ({
 }: VideoJSPlayerProps) => {
   const videoRef = useRef<HTMLDivElement>(null)
   const playerRef = useRef<any>(null)
+  const onVideoEndRef = useRef<(() => void) | undefined>(onVideoEnd)
+
+  useEffect(() => {
+    onVideoEndRef.current = onVideoEnd
+  }, [onVideoEnd])
 
   useEffect(() => {
     if (!videoRef.current) return
@@ -74,7 +79,7 @@ const VideoPlayerCard = ({
     })
 
     player.on('ended', () => {
-      if (onVideoEnd) onVideoEnd()
+      onVideoEndRef.current?.()
     })
 
     return () => {
@@ -83,7 +88,7 @@ const VideoPlayerCard = ({
         playerRef.current = null
       }
     }
-  }, [videoFile, thumbnail, autoplay, onVideoEnd])
+  }, [videoFile, thumbnail, autoplay])
 
   return (
     <div className="w-full rounded-lg overflow-hidden bg-black">
