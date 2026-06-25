@@ -22,6 +22,7 @@ import AllSubscribers from "./pages/Subscriber/AllSubscribers";
 import AllPlaylist from "./pages/Playlist/AllPlaylist";
 import UserPlaylist from "./pages/Playlist/UserPlaylist";
 import { useAppSelector } from "./app/hooks";
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const dispatch = useAppDispatch()
@@ -52,6 +53,7 @@ function App() {
     <ToastProvider>
       <BrowserRouter>
         <ScrollToTop />
+        <Analytics />
         <Routes>
     
           {/* Authenticated routes */}
