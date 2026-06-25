@@ -183,7 +183,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     const videoFile = await uploadOnCloudinary(videoFilePath)
     const thumbnail = await uploadOnCloudinary(thumbnailPath)
 
-    if (!videoFile?.url || !thumbnail?.url) {
+    if (!videoFile?.secure_url || !thumbnail?.secure_url) {
         throw new ApiError(500, "Cloudinary upload failed");
     }
 
@@ -193,8 +193,8 @@ const publishAVideo = asyncHandler(async (req, res) => {
         owner,
         category,
         isPublished,
-        videoFile: videoFile.url,
-        thumbnail: thumbnail.url,
+        videoFile: videoFile.secure_url,
+        thumbnail: thumbnail.secure_url,
         duration: videoDuration
     })
 
@@ -253,8 +253,8 @@ const updateVideo = asyncHandler(async (req, res) => {
         const uploadedThumb = await uploadOnCloudinary(thumbnailPath);
         await deleteFromCloudinary(video.thumbnail);
 
-        if (uploadedThumb?.url) {
-            updates.thumbnail = uploadedThumb.url;
+        if (uploadedThumb?.secure_url) {
+            updates.thumbnail = uploadedThumb.secure_url;
         }
     }
 

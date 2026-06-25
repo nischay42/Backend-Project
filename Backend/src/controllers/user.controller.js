@@ -338,7 +338,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     const avatar = await uploadOnCloudinary(avatarLocalPath)
 
 
-    if (!avatar.url) {
+    if (!avatar.secure_url) {
         throw new ApiError(400, "Error while uloading on avatar")
     }
 
@@ -347,7 +347,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
         userId,
         {
             $set: {
-                avatar: avatar.url
+                avatar: avatar.secure_url
             }
         },
         {new: true}
@@ -381,7 +381,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
     
-    if (!coverImage.url) {
+    if (!coverImage.secure_url) {
         throw new ApiError(400, "Error while uloading on coverImage")
     }
 
@@ -389,7 +389,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
         userId,
         {
             $set: {
-                coverImage: coverImage.url
+                coverImage: coverImage.secure_url
             }
         },
         {new: true}
