@@ -1,5 +1,4 @@
 import History from "./History"
-import Collection from "./Collection"
 import Home from "./Home"
 import LikedVideo from "./LikedVideo"
 import Support from "./Support"
@@ -14,7 +13,6 @@ import SearchResult from "./SearchResult"
 
 export {
     History,
-    Collection,
     Home,
     LikedVideo,
     Support,
