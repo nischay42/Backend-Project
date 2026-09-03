@@ -1,6 +1,103 @@
-# React + TypeScript + Vite
+# Frontend - Play React Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, fully-featured frontend for Play video streaming platform built with React 19, TypeScript, Redux Toolkit, and Tailwind CSS.
+
+## 📋 Table of Contents
+
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Environment Variables](#environment-variables)
+- [Project Structure](#project-structure)
+- [Component Overview](#component-overview)
+- [State Management](#state-management)
+- [API Integration](#api-integration)
+- [Scripts](#scripts)
+- [Styling](#styling)
+- [Performance](#performance)
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js (v16+)
+- npm or yarn
+- Backend API running on `http://localhost:8000`
+
+### Installation
+
+```bash
+npm install
+npm run dev
+```
+
+Application runs on `http://localhost:5173`
+
+## ✨ Features
+
+### User Management
+- ✅ User Registration with validation
+- ✅ Login/Logout functionality
+- ✅ User profile management
+- ✅ Password update
+- ✅ Avatar and cover image upload
+- ✅ Watch history tracking
+
+### Video Features  
+- ✅ Video upload with progress
+- ✅ Video streaming with player
+- ✅ Search functionality
+- ✅ Video filtering
+- ✅ Trending videos
+
+### Social Features
+- ✅ Like/Unlike videos
+- ✅ Comments with threading
+- ✅ Subscribe to channels
+- ✅ Create & manage playlists
+- ✅ Watch Later list
+
+### UI/UX
+- ✅ Responsive design (mobile-first)
+- ✅ Skeleton loading states
+- ✅ Toast notifications
+- ✅ Error handling
+
+## 🔧 Environment Variables
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── api/          # API client functions
+├── app/          # Redux store
+├── features/     # Redux slices
+├── components/   # Reusable components
+├── pages/        # Page components
+├── context/      # React Context
+├── hooks/        # Custom hooks
+├── utils/        # Utilities
+└── assets/       # Static files
+```
+
+## 📦 Scripts
+
+```bash
+npm run dev       # Start dev server
+npm run build     # Build for production
+npm run preview   # Preview build
+npm run lint      # Run ESLint
+```
+
+## 📝 License
+
+ISC License
+
+---
+
+**Built with ❤️ using React + TypeScript + Redux**
 
 Currently, two official plugins are available:
 
