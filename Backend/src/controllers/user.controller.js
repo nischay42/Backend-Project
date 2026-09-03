@@ -475,66 +475,94 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
 
 })
 
-const getWatchHistory = asyncHandler(async (req,  res) => {
+const getWatchHistory = asyncHandler(async (req, res) => {
     const userId = req.user?._id
 
     if (!isValidObjectId(userId)) {
         throw new ApiError(400, "User Id is missing")
     }
 
-    const user = await User.aggregate([
-        {
-            $match: {
-                _id: new mongoose.Types.ObjectId(userId)
-            }
-        },
-        {
-            $lookup: {
-                from: "videos",
-                localField: "watchHistory",
-                foreignField: "_id",
-                as: "watchHistory",
-                pipeline: [
-                    {
-                        $lookup: {
-                            from: "users",
-                            localField: "owner",
-                            foreignField: "_id",
-                            as: "owner"
-                        }
-                    },
-                    { $unwind: '$owner' },
-                    {
-                        $project: {
-                            title: 1,
-                            thumbnail: 1,
-                            views: 1,
-                            createdAt: 1,
-                            duration: 1,
-                            videoFile: 1,
-                            _id: 1,
-                            owner: {
+   const user = await User.aggregate([
+    {
+        $match: {
+            _id: new mongoose.Types.ObjectId(userId)
+        }
+    },
+    // Save original ordered IDs before lookup overwrites watchHistory
+    {
+        $addFields: {
+            watchHistoryIds: "$watchHistory"
+        }
+    },
+    {
+        $lookup: {
+            from: "videos",
+            localField: "watchHistory",
+            foreignField: "_id",
+            as: "watchHistory",
+            pipeline: [
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "owner",
+                        foreignField: "_id",
+                        as: "owner"
+                    }
+                },
+                { $unwind: '$owner' },
+                {
+                    $project: {
+                        title: 1,
+                        thumbnail: 1,
+                        views: 1,
+                        createdAt: 1,
+                        duration: 1,
+                        videoFile: 1,
+                        _id: 1,
+                        owner: {
                             fullname: "$owner.fullname",
                             avatar: "$owner.avatar",
                             username: "$owner.username",
                             channelId: "$owner._id"
-                          }
                         }
                     }
-                ]
+                },
+                { $sort: { createdAt: -1 } }
+            ]
+        }
+    },
+    // Reorder watchHistory to match original watchHistoryIds order
+    {
+    $addFields: {
+        watchHistory: {
+            $map: {
+                input: { $reverseArray: "$watchHistoryIds" },  // latest watched first
+                as: "id",
+                in: {
+                    $arrayElemAt: [
+                        "$watchHistory",
+                        { $indexOfArray: ["$watchHistory._id", "$$id"] }
+                    ]
+                }
             }
         }
-    ])
+    }
+},
+    // Cleanup
+    {
+        $unset: "watchHistoryIds"
+    }
+])
 
     return res
-    .status(200)
-    .json(
-        new ApiResponse(
-            200,
-            user[0].watchHistory,
-            "Watch history fetched successfully"
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                user[0].watchHistory,
+                "Watch history fetched successfully"
+            )
         )
-    )
 })
 
 export {
