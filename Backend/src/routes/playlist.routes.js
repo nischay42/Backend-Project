@@ -22,6 +22,8 @@ import {verifyJWT, optionalVerifyJWT} from "../middlewares/auth.middleware.js"
 
 const router = Router();
 
+router.route('/all').get(verifyJWT, getAllPlaylists)
+router.route("/watch-later").get(verifyJWT, getWatchLaterVideos)
 router.route('/public').get(optionalVerifyJWT, getPublicPlaylist)
 router.route('/:playlistId').get(optionalVerifyJWT, getPlaylistById)
 
@@ -29,9 +31,7 @@ router.use(verifyJWT)
 
 router.route('/check-saved/:playlistId').get(checkPlaylistSaved)
 router.route("/").post(createPlaylist)
-router.route('/all').get(getAllPlaylists)
 router.route("/saved").get(getSavedPlaylists)
-router.route("/watch-later").get(getWatchLaterVideos)
 router.route("/watch-later/check/:videoId").get(isVideoInWatchLater)
 router.route("/watch-later/add/:videoId").patch(addToWatchLater)
 router.route("/watch-later/remove/:videoId").patch(removeFromWatchLater)
