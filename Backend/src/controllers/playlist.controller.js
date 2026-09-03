@@ -677,7 +677,8 @@ const getWatchLaterVideos = asyncHandler(async (req, res) => {
                     channelId: '$owner._id'
                 }
             }
-        }
+        },
+        { $sort: { createdAt: -1 } }
     ])
 
     return res
