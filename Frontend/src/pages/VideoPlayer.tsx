@@ -193,7 +193,14 @@ const VideoPlayer = () => {
       toast.error(error?.message || 'Failed to create comment');
     }
   }
-  
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) { 
+        e.preventDefault();
+        handleSubmit();
+    }
+  }
+
   return (
     <div className="lg:flex w-full">
       {/* main content left side */}
@@ -234,9 +241,10 @@ const VideoPlayer = () => {
               onChange={(e) => setComment(e.target.value)} 
               className='rounded-lg placeholder:text-white py-2' 
               placeholder='Add a Comment' 
+              onKeyDown={handleKeyDown}
             />
             <Button 
-              onClick={handleSubmit} 
+              onClick={handleSubmit}
               children='Comment' 
               textColor='white' 
               className='self-end mt-4' 
