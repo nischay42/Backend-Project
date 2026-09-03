@@ -1,5 +1,4 @@
 import { type ToastType, Toast } from "./Toast"
-// import { TransitionGroup, CSSTransition } from "react-transition-group"
 
 export interface ToastMessage {
     id: string,

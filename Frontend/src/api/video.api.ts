@@ -1,25 +1,5 @@
 import api from "./axios";
 
-// const getAllVideo = async (
-//   limit: number = 12, 
-//   category: string = 'All',
-//   page: number = 1,
-//   isRandom: boolean = false
-// ) => {
-//   const params = new URLSearchParams({
-//     limit: limit.toString(),
-//     page: page.toString(),
-//     random: isRandom ? 'true' : 'false'
-//   })
-
-//   if (category && category !== 'All') {
-//     params.append('category', category)
-//   }
-
-//   const res = await api.get(`/videos?${params}`)
-//   return res.data
-// }
-
 const getAllVideo = async (
   limit: number,
   category: string,
@@ -57,40 +37,6 @@ type publishVideoPayload = {
     isPublished: boolean
 }
 
-// const publishVideo = async ( 
-//     payload: publishVideoPayload,
-//     onProgress?: (progress: number) => void
-// ) => {
-//     const formData = new FormData()
-   
-//     formData.append('title', payload.title)
-//     formData.append('description', payload.description)
-//     formData.append('category', payload.category)
-//     formData.append('videoFile', payload.videoFile)
-//     formData.append('thumbnail', payload.thumbnail)
-//     formData.append('isPublished', String(payload.isPublished))
-
-
-//   try {
-//     const res = await api.post('/videos', formData, {
-//       headers: {
-//         'Content-Type': 'multipart/form-data',
-//       },
-//       onUploadProgress: (progressEvent) => {
-//         if (progressEvent.total) {
-//           const percentCompleted = Math.round(
-//             (progressEvent.loaded * 100) / progressEvent.total
-//           )
-//           onProgress?.(percentCompleted)
-//         }
-//       },
-//     })
-
-//     return res.data
-//   } catch (error) {
-//     throw error
-//   }
-// }
 
 const publishVideo = async (
     payload: publishVideoPayload,

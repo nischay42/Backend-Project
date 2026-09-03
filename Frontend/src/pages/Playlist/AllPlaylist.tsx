@@ -15,16 +15,15 @@ const AllPlaylist = () => {
             try {
                 const res = await getAllPlaylists({})
                 setAllPlaylists(res.data.playlists)                
-            } catch (error) {
-                console.log('Failed to fetch playlists', error);
-                toast.error('Failed to fetch playlists')
+            } catch (error: any) {
+                const errorMessage = error?.response?.data?.message || 'Failed to fetch playlists'
+                toast.error(errorMessage)
             } finally {
               setIsLoading(false)
             }
         }
         fetchPlaylists()
-    }, [])    
-        // console.log(allPlaylists);
+    }, [])
         
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 min-w-[80vw] pb-10">

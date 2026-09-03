@@ -49,7 +49,6 @@ const WatchVideoCard = ({
     usernameSize='lg:text-sm'
 }: videoProp) => {
     const [isHovering, setIsHovering] = useState(false);
-    // const [maxLength, setMaxLength] = useState(40)
     const navigate = useNavigate()
     
     const isMobile = window.innerWidth < 768
@@ -76,8 +75,6 @@ const WatchVideoCard = ({
         className="flex z-0 top-0 h-full w-full"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        // onTouchStart={handleMouseEnter}
-        // onTouchEnd={handleMouseLeave}
       >        
       <div className={`relative ${videoWidth} `}>
           {!isHovering && (

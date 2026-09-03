@@ -9,7 +9,7 @@ const Sidebar = () => {
 
 const { isAuthenticated } = useAppSelector((state) => state.auth)
 const username  = useAppSelector((state: RootState) => state.auth.user?.username)
-const location = useLocation() // ✅ Use this to check active route
+const location = useLocation()
 const [isVisible, setIsVisible] = useState(true)
 
 const [isSidebarOpen, setIsSidebarOpen] = useState(() => {

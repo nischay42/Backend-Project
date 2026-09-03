@@ -15,10 +15,12 @@ const History = () => {
       setIsLoading(true)
       try {
         const res = await userWatchHistory()
+        console.log(res);
+        
         setWatchHistory(res.data)
       } catch (error: any) {
-        console.log('Failed to fetch watch history', error);
-        toast.error('Failed to fetch watch history')
+        const errorMessage = error?.response?.data?.message || 'Failed to fetch Watch History'
+        toast.error(errorMessage)
       } finally {
         setIsLoading(false)
       }

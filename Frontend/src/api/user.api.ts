@@ -5,8 +5,6 @@ type UserReg = {
     email: string,
     username: string,
     password: string,
-    // avatar: File | null,
-    // coverImage: File | null,
 }
 
 const userRegister = async (details: UserReg) => {

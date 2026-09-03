@@ -18,7 +18,7 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false)
     const toast = useToastContext()
 
-    // ✅ Client-side validation
+    // Client-side validation
     const validateForm = () => {
         const newErrors = {
             email: '',
@@ -65,7 +65,7 @@ const Login = () => {
             await dispatch(login({ email, password })).unwrap()
             toast.success('Login successful!')
         } catch (error: any) {
-            // ✅ Handle specific error types
+            // Handle specific error types
             const errorMessage = error?.message || 'Login failed'
             const errorLower = errorMessage.toLowerCase()
 
@@ -94,7 +94,7 @@ const Login = () => {
         }
     }
 
-    // ✅ Clear error when user starts typing
+    // Clear error when user starts typing
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
         if (errors.email) {

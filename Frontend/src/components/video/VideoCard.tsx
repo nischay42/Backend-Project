@@ -118,7 +118,6 @@ const VideoCard = ({
   }
 
   const handleCardClick = () => {
-    // window.scrollTo({ top: 0, behavior: 'instant' });
     navigate(`/watch?v=${videoId}`)
   }
 

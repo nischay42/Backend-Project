@@ -19,12 +19,6 @@ const HamburgerMenu = ({ isOpen, onClose }: HamburgerMenuProps) => {
   const { isAuthenticated, user } = useAppSelector((state) => state.auth)
 
   const menuItems = [
-    // { 
-    //   label: "Liked Videos", 
-    //   icon: like, 
-    //   path: "/liked-videos", 
-    //   auth: false 
-    // },
     { 
       label: "Playlists", 
       icon: playlist, 

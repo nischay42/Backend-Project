@@ -27,7 +27,7 @@ const Signup = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [showPasswordRequirements, setShowPasswordRequirements] = useState(false)
 
-    // ✅ Password validation criteria
+    // Password validation criteria
     const passwordRequirements = {
         minLength: password.length >= 8,
         hasUpperCase: /[A-Z]/.test(password),
@@ -38,7 +38,7 @@ const Signup = () => {
 
     const isPasswordValid = Object.values(passwordRequirements).every(Boolean)
 
-    // ✅ Comprehensive validation
+    // Comprehensive validation
     const validateForm = () => {
         const newErrors = {
             fullname: '',
@@ -135,7 +135,7 @@ const Signup = () => {
             const errorLower = errorMessage.toLowerCase()
             
 
-            // ✅ Handle specific backend errors
+            // Handle specific backend errors
             if (errorLower.includes('email') && errorLower.includes('exist')) {
                 setErrors(prev => ({ 
                     ...prev, 
@@ -174,7 +174,7 @@ const Signup = () => {
         }
     }
 
-    // ✅ Clear errors when typing
+    // Clear errors when typing
     const handleFullnameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFullname(e.target.value)
         if (errors.fullname) {
@@ -329,7 +329,7 @@ const Signup = () => {
     )
 }
 
-// ✅ Password Requirement Component
+// Password Requirement Component
 interface PasswordRequirementProps {
     met: boolean
     text: string

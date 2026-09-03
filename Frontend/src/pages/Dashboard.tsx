@@ -1,4 +1,3 @@
-// pages/Dashboard.tsx
 import { useState, useEffect } from 'react'
 import { Eye, UserRoundCheck, Heart, Pencil, Trash2 } from 'lucide-react'
 import { getChannelStats, getChannelVideosStats } from '../api/dashboard.api'

@@ -8,7 +8,6 @@ import { useAppSelector } from '../../app/hooks'
 import type { RootState } from "../../app/store.ts"
 import { toggleSubscription, getChannelSubscribers } from '../../api/subscription.api.ts'
 import { useToastContext } from '../../context/ToastContext.tsx'
-// import { resolveMediaUrl } from '../../utils/mediaUrl'
 
 
 interface ChannelPayload {
@@ -35,8 +34,6 @@ const ChannelHeader = ({ details }: Props) => {
   const isUser = username === details.username
   const channelId = details._id 
   const toast = useToastContext()
-  // const resolvedCoverImage = resolveMediaUrl(details.coverImage) || details.coverImage
-  // const resolvedAvatar = resolveMediaUrl(details.avatar) || details.avatar || profile
   
 
   // handle subscription

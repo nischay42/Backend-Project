@@ -25,6 +25,4 @@ export type UserSignup = {
     username: string,
     email: string,
     password: string
-    // avatar: File | null,
-    // coverImage: File | null,
 }
