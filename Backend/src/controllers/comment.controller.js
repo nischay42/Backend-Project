@@ -4,6 +4,7 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Video } from "../models/video.model.js";
+import { Like } from "../models/like.model.js";
 
 const getVideoComments = asyncHandler(async (req, res) => {
   
@@ -155,22 +156,28 @@ const updateComment = asyncHandler(async (req, res) => {
 })
 
 const deleteComment = asyncHandler(async (req, res) => {
-   
+   const userId = req.user._id
    const { commentId } = req.params
 
    if (!isValidObjectId(commentId)) {
       throw new ApiError(400, "comment Id is missing")
    }
 
-   const comment =  await findById(commentId)
+   if (!isValidObjectId(userId)) {
+       throw new ApiError(400, "User Id is missing")
+   }
+
+   const comment =  await Comment.findById(commentId)
+
    if (!comment) {
       throw new ApiError(404, "comment not found")
    }
 
-   if (comment.owner.toString() !== req.user._id.toString()) {
+   if (comment.owner.toString() !== userId.toString()) {
       throw new ApiError(403, "You are not allowed to delete this comment")
    }
 
+   await Like.deleteMany({ comment: commentId })
    await Comment.findByIdAndDelete(commentId)
 
    return res

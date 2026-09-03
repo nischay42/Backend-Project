@@ -1,5 +1,6 @@
 import mongoose, { isValidObjectId } from "mongoose"
 import {Tweet} from "../models/tweet.model.js"
+import {Like} from "../models/like.model.js"
 import {User} from "../models/user.model.js"
 import {ApiError} from "../utils/apiError.js"
 import {ApiResponse} from "../utils/apiResponse.js"
@@ -41,7 +42,7 @@ const  getUserTweets = asyncHandler(async (req, res) => {
     const tweets = await Tweet.find({
         owner: channelId
     })
-    .populate('owner', 'fullname avatar')
+    .populate('owner', 'fullname avatar username')
     .sort({ createdAt: -1 })
     
     return res
@@ -115,7 +116,7 @@ const deleteTweet = asyncHandler(async (req, res) => {
     if (tweet.owner.toString() !== userId.toString()) {
         throw new ApiError(403, "You are not allowed to delete this tweet")
     }
-
+    await Like.deleteMany({ tweet: tweetId })
     await Tweet.findByIdAndDelete(tweetId)
 
     return res
