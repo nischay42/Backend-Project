@@ -21,7 +21,7 @@ const updateComment = async (commentId: string, content: string) => {
     return res.data
 }
 
-const deleteCommen = async (commentId: string) => {
+const deleteComment = async (commentId: string) => {
     
     const res = await api.delete(`/comments/c/${commentId}`)
     return res.data
@@ -31,5 +31,5 @@ export {
     getVideoComments,
     addComment,
     updateComment,
-    deleteCommen
+    deleteComment
 }

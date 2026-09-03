@@ -173,9 +173,9 @@ const TweetCard = ({
   }
   
   return (
-    <div className="mt-4">
+    <div className="mt-4 z-10">
       <div className="w-full bg-[#EAECF0] h-px"></div>
-      <div className="flex mt-3 gap-2 relative">
+      <div className="flex mt-3 gap-2 relative z-10">
         {/* Menu */}
         {isUser && isAuthenticated && 
           <div className="absolute right-2 z-50" ref={menuRef}>
@@ -187,7 +187,7 @@ const TweetCard = ({
           {/* Dropdown Menu */}
           {showMenu && (
             <div 
-              className="absolute right-0 mt-2 w-48 bg-black border border-gray-700 rounded-lg shadow-xl overflow-hidden"
+              className="absolute right-7 -mt-6 w-48 z-100 bg-black border border-gray-700 rounded-lg shadow-xl overflow-hidden"
               onClick={(e) => e.stopPropagation()} 
             >
               <button 
@@ -200,7 +200,7 @@ const TweetCard = ({
                 Edit tweet
               </button>
               <button 
-                className="w-full text-left px-4 py-3 hover:bg-neutral-900 transition-colors text-red-500"
+                className="w-full text-left px-4 py-3 z-100 hover:bg-neutral-900 transition-colors text-red-500"
                 onClick={(e) => {
                   e.stopPropagation()
                   setShowMenu(false)
