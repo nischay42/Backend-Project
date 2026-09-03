@@ -5,7 +5,7 @@ import { useToastContext } from '../context/ToastContext'
 import VideoPlayerDetails from '../components/video/VideoPlayerDetails'
 import Input from '../components/Input'
 import Button from '../components/Button'
-import TweetCard from '../components/channel/TweetCard'
+import CommentCard from '../components/video/CommentCard'
 import WatchVideoCard from '../components/video/WatchVideoCard'
 import { getAllVideo, addVideoView, getVideoById } from '../api/video.api'
 import { addComment, getVideoComments } from '../api/comment.api'
@@ -182,15 +182,15 @@ const VideoPlayer = () => {
   const handleSubmit = async () => {
     if (!isAuthenticated) return toast.warning('Please Login/Signup to Comment', 3000)
     if (!comment || !videoId) {
-      toast.error("Please write something in Tweet")
+      toast.error("Please write something in comment")
       return
     }
     try {
       await addComment(videoId,comment);
       setComment(''); 
-      toast.success('Tweet created successfully!');
+      toast.success('Comment created successfully!');
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to create tweet');
+      toast.error(error?.message || 'Failed to create comment');
     }
   }
   
@@ -246,14 +246,29 @@ const VideoPlayer = () => {
           <div className="z-10`0">
           {fetchComments && 
             fetchComments.map((comment) => (
-              <TweetCard 
+              <CommentCard 
                 key={comment._id}
                 fullname={comment.owner.fullname}
                 username={comment.owner.username}
                 content={comment.content}
                 createdAt={comment.createdAt}
                 avatar={comment.owner?.avatar}
-                tweetId={comment._id}
+                commentId={comment._id}
+                onDelete={(commentId) => {
+                  setFetchComments((comments) => 
+                    comments.filter((item) => item._id !== commentId)
+                  )
+                  setTotalComments((count) => String(Math.max(0, Number(count) - 1)))
+                }}
+                 onUpdate={(commentId, newContent) => {
+                  setFetchComments((comments) =>
+                    comments.map((item) =>
+                      item._id === commentId
+                        ? { ...item, content: newContent }
+                        : item
+                    )
+                  )
+                }}
               />
             ))
           }
